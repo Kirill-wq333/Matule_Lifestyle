@@ -3,12 +3,15 @@ package com.example.matulelibrary.shared.button
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.matulelibrary.color.MatuleColors
+import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
@@ -55,7 +59,7 @@ fun BigButton(
         textBtn = textBtn,
         color = color,
         style = MatuleTypography.titleMedium17,
-        verticalPadding = 16.dp,
+        verticalPadding = MatuleSpacers.spacer16,
         onClick = onClick,
         enable = enable
     )
@@ -121,7 +125,7 @@ fun ChipsButton(
         color = if (isSelectedColor) MatuleColors.white else MatuleColors.description,
         style = MatuleTypography.textMedium15,
         verticalPadding = 14.dp,
-        horizontalPadding = 20.dp,
+        horizontalPadding = MatuleSpacers.spacer20,
         onClick = onClick
     )
 }
@@ -139,7 +143,12 @@ private fun Content(
 ){
     Box(
         modifier = modifier
-            .clickable(enabled = enable, onClick = onClick),
+            .clickable(
+                enabled = enable,
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ),
         contentAlignment = Alignment.Center
     ) {
         Text(
