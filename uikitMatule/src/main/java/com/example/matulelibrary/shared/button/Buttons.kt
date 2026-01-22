@@ -23,14 +23,18 @@ import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
-fun BigButton(
+fun MatuleButton(
     textBtn: String,
     activeBtn: Boolean = false,
     unactiveBtn: Boolean = false,
     notBackground: Boolean = false,
+    isBigBtn: Boolean = true,
     onClick: () -> Unit,
-    enable: Boolean
+    enable: Boolean = true
 ){
+    val buttonModifier = if (isBigBtn) Modifier.fillMaxWidth() else Modifier
+    val verticalPadding = if (isBigBtn) MatuleSpacers.spacer16 else 10.dp
+    val horizontalPadding = if (isBigBtn) 0.dp else 15.dp
     val background = when{
         activeBtn -> MatuleColors.accent
         unactiveBtn -> MatuleColors.accentInactive
@@ -46,8 +50,7 @@ fun BigButton(
     }
 
     Content(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = buttonModifier
             .border(
                 width = 1.dp,
                 color = if (notBackground) MatuleColors.accent else Color.Transparent,
@@ -59,51 +62,8 @@ fun BigButton(
         textBtn = textBtn,
         color = color,
         style = MatuleTypography.titleMedium17,
-        verticalPadding = MatuleSpacers.spacer16,
-        onClick = onClick,
-        enable = enable
-    )
-}
-
-@Composable
-fun SmallButton(
-    textBtn: String,
-    activeBtn: Boolean = false,
-    unactiveBtn: Boolean = false,
-    notBackground: Boolean = false,
-    onClick: () -> Unit,
-    enable: Boolean
-
-) {
-    val background = when {
-        activeBtn -> MatuleColors.accent
-        unactiveBtn -> MatuleColors.accentInactive
-        notBackground -> Color.Transparent
-        else -> MatuleColors.inputBg
-    }
-    val color = when {
-        activeBtn -> MatuleColors.white
-        unactiveBtn -> MatuleColors.white
-        notBackground -> MatuleColors.accent
-        else -> MatuleColors.black
-    }
-
-    Content(
-        modifier = Modifier
-            .border(
-                width = 1.dp,
-                color = if (notBackground) MatuleColors.accent else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .background(
-                color = background,
-                shape = RoundedCornerShape(10.dp)
-            ),
-        textBtn = textBtn,
-        color = color,
-        style = MatuleTypography.captionSemiBold14,
-        verticalPadding = 10.dp,
-        horizontalPadding = 15.dp,
+        verticalPadding = verticalPadding,
+        horizontalPadding = horizontalPadding,
         onClick = onClick,
         enable = enable
     )
@@ -138,7 +98,7 @@ private fun Content(
     enable: Boolean = true,
     color: Color,
     style: TextStyle,
-    verticalPadding: Dp,
+    verticalPadding: Dp = 0.dp,
     horizontalPadding: Dp = 0.dp
 ){
     Box(

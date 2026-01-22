@@ -3,6 +3,7 @@
     <string name="name_app">Matule</string>
     <string name="in_cart">В корзину</string>
     <string name="rubles">₽</string>
+    <string name="money">%1$s ₽</string>
     <string name="log_in_vk">Войти с VK</string>
     <string name="log_in_yandex">Войти с Yandex</string>
     <string name="btn_">Подтвердить</string>
@@ -21,7 +22,7 @@
     <string name="cart">Корзина</string>
     <string name="catalog_of_descriptions">Каталог описаний</string>
     <string name="promotions_and_news">Акции и новости</string>
-    <string name="btn_added_for_₽">Добавить за %1$s ₽</string>
+    <string name="btn_added_for">Добавить за %1$s ₽</string>
     <string name="type">Тип</string>
     <string name="name_project">Название проекта</string>
     <string name="whom">Кому</string>
