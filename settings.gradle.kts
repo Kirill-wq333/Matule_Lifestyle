@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "Matule2.0"
 include(":app")
 include(":uikitMatule")
+include(":data")
+include(":domain")
