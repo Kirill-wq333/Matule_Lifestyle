@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -37,7 +38,7 @@ import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
 fun Selection(
-    icon: Int,
+    image: Int,
     selectionName: String,
     content: @Composable () -> Unit = {}
 ) {
@@ -72,7 +73,7 @@ fun Selection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(icon),
+                    imageVector = ImageVector.vectorResource(image),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
@@ -97,7 +98,7 @@ fun Selection(
         AnimatedVisibility(
             visible = visibleDropMenu,
             enter = fadeIn(tween(700)) + slideInVertically(tween(700)),
-            exit = fadeOut(tween(700)) + slideOutHorizontally(tween(700))
+            exit = fadeOut(tween(700)) + slideOutVertically(tween(700))
         ) {
             content()
         }
