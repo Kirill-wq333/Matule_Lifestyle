@@ -32,6 +32,7 @@ fun BigIconButton(onClick: () -> Unit) {
 
 @Composable
 fun SmallIconButton(
+    modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(6.dp),
     icon: Int,
     padding: Dp = 6.dp,
@@ -39,7 +40,7 @@ fun SmallIconButton(
     onClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
