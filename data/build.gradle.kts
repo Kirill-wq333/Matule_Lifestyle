@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id ("kotlin-kapt")
+    id ("com.google.dagger.hilt.android")
 }
 
 android {
@@ -35,6 +37,19 @@ android {
 }
 
 dependencies {
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logger)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
