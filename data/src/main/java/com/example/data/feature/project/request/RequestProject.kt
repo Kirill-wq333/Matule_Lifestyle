@@ -1,0 +1,16 @@
+package com.example.data.feature.project.request
+
+import com.google.gson.annotations.SerializedName
+import java.io.File
+
+data class RequestProject(
+    val title: String,
+    val typeProject: String,
+    @SerializedName("user_id")val userId: String,
+    val dateStart: String,
+    val dateEnd: String,
+    val gender: String,
+    @SerializedName("description_source")val descriptionSource: String,
+    val category: String,
+    val image: File
+)
