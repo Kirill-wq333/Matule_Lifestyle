@@ -6,6 +6,7 @@ drawable ic_chevron_left
 drawable ic_close
 drawable ic_close_eye
 drawable ic_delete
+drawable ic_delete_text
 drawable ic_dismiss
 drawable ic_download
 drawable ic_eye
@@ -17,6 +18,8 @@ drawable ic_message_circle
 drawable ic_mic
 drawable ic_minus
 drawable ic_more_horizontal
+drawable ic_notification
+drawable ic_orders
 drawable ic_paperclip
 drawable ic_plus
 drawable ic_profile
@@ -24,6 +27,9 @@ drawable ic_project
 drawable ic_search
 drawable ic_send
 drawable ic_shopping_cart
+drawable ic_vk_logo
+drawable ic_yandex_logo
+drawable palm
 font roboto_bold
 font roboto_extrabold
 font roboto_medium
