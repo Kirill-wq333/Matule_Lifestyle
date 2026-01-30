@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.matulelibrary.R
@@ -40,9 +41,12 @@ import com.example.matulelibrary.typography.MatuleTypography
 fun Selection(
     image: Int,
     selectionName: String,
+    visibleColorActive: Boolean,
     content: @Composable () -> Unit = {}
 ) {
     var visibleDropMenu by remember { mutableStateOf(false) }
+
+    val color = if (visibleColorActive) Color.Black else Color(0xFF939396)
 
     Column(
         modifier = Modifier
@@ -51,6 +55,9 @@ fun Selection(
                 color = MatuleColors.inputBg,
                 shape = RoundedCornerShape(10.dp)
             )
+            .clickable{
+                visibleDropMenu = !visibleDropMenu
+            }
     ) {
         Row(
             modifier = Modifier
@@ -73,7 +80,7 @@ fun Selection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(image),
+                    painter = painterResource(image),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
@@ -90,9 +97,6 @@ fun Selection(
                     .rotate(
                         if (visibleDropMenu) 180f else 0f
                     )
-                    .clickable{
-                        visibleDropMenu = !visibleDropMenu
-                    }
             )
         }
         AnimatedVisibility(
