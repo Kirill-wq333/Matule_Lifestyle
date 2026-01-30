@@ -66,6 +66,10 @@ fun SearchTextField(
 fun PasswordTextField(
     password: String,
     onPasswordChange: (String) -> Unit,
+    visibleTrailing: Boolean = false,
+    labelText: String = "",
+    errorText: String = "",
+    isError: Boolean = false
 ) {
     var visiblePassword by remember { mutableStateOf(false) }
 
@@ -83,16 +87,22 @@ fun PasswordTextField(
         onTextChange = onPasswordChange,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = transformation,
+        labelText = labelText,
+        errorText = errorText,
+        isError = false,
+        label = true,
         trailingIcon = {
-            Icon(
-                imageVector = ImageVector.vectorResource(trailingIcon),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier
-                    .clickable{
-                        visiblePassword = !visiblePassword
-                    }
-            )
+            if (visibleTrailing) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(trailingIcon),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier
+                        .clickable {
+                            visiblePassword = !visiblePassword
+                        }
+                )
+            }
         }
     )
 }
