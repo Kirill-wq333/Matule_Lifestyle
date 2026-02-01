@@ -30,6 +30,13 @@ import com.example.matulelibrary.shared.divider.MatuleHorizontalDivider
 import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ * Нижняя панель навигации для переключения между основными экранами приложения.
+ * Отображает иконки с подписями и подсвечивает активный экран.
+ *
+ * @param navController Контроллер навигации для перехода между экранами.
+ */
+
 @Composable
 fun BottomBar(
     navController: NavHostController
@@ -97,6 +104,15 @@ fun BottomBar(
     }
 }
 
+/**
+ * Отдельный кликабельный элемент нижней панели навигации.
+ * Состоит из иконки и текстовой подписи.
+ *
+ * @param icon Ресурс иконки элемента.
+ * @param text Текстовая подпись элемента.
+ * @param color Цвет иконки и текста (меняется в зависимости от состояния).
+ * @param onClick Обработчик нажатия на элемент.
+ */
 @Composable
 fun BottomBarItem(
     icon: Int,
@@ -124,6 +140,13 @@ fun BottomBarItem(
     }
 }
 
+/**
+ * Data-класс, описывающий элемент нижней панели навигации.
+ *
+ * @property route маршрут для навигации
+ * @property name строковый ресурс для отображаемого названия
+ * @property icon ресурс иконки
+ */
 private data class BottomBarDC(
     val route: String,
     val name: Int,

@@ -1,5 +1,21 @@
 package com.example.data.feature.product.model
 
+/**
+ *
+ * Модель данных товара
+ *
+ * @property id Идентификатор товара
+ * @property collectionId Идентификатор коллекции в базе данных
+ * @property collectionName Название коллекции/таблицы товаров
+ * @property created Дата и время создания записи
+ * @property updated Дата и время последнего обновления
+ * @property title Название товара
+ * @property description Подробное описание товара
+ * @property price Стоимость товара
+ * @property typeCloses Тип одежды
+ * @property type Категория товара
+ * @property approximateCost Примерная стоимость
+ */
 data class Product(
     val id: String,
     val collectionId: String,

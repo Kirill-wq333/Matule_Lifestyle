@@ -20,6 +20,12 @@ import androidx.compose.ui.unit.dp
 import com.example.matulelibrary.R
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ *
+ * Уведомление об ошибке или других действиях
+ *
+ * @param message Предупреждающее сообщение об ошибке или других действиях
+ */
 @Composable
 fun SnackBar(
     message: String

@@ -1,5 +1,21 @@
 package com.example.data.feature.auth.response
 
+/**
+ * Ответ на успешную регистрацию пользователя.
+ *
+ * @property collectionId Идентификатор коллекции/таблицы пользователей в базе данных
+ * @property collectionName Название коллекции/таблицы пользователей
+ * @property created Дата и время создания записи пользователя
+ * @property emailVisibility Флаг видимости email для пользователя
+ * @property firstname Имя пользователя
+ * @property id Уникальный идентификатор пользователя в системе
+ * @property lastname Фамилия пользователя
+ * @property secondname Отчество пользователя
+ * @property updated Дата и время последнего обновления записи
+ * @property verified Флаг подтверждения email адреса пользователя
+ * @property datebirthday Дата рождения пользователя
+ * @property gender Пол пользователя
+ */
 data class ResponseRegister(
     val collectionId: String,
     val collectionName: String,
@@ -10,7 +26,7 @@ data class ResponseRegister(
     val lastname: String,
     val secondname: String,
     val updated: String,
-    val verified: String,
+    val verified: Boolean,
     val datebirthday: String,
     val gender: String
 )

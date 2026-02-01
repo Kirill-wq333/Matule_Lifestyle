@@ -23,6 +23,15 @@ import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ *
+ * Универсальная кнопка авторизации через сервисы
+ *
+ * @param text название серввиса
+ * @param icon Иконка серввиса
+ * @param onClick Обработчик нажатия кнопки
+ */
+
 @Composable
 fun LogInButton(
     text: String,

@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +36,14 @@ import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ * Раскрывающаяся секция с заголовком и анимированным контентом.
+ *
+ * @param image Ресурс иконки для заголовка секции
+ * @param selectionName Текст заголовка секции
+ * @param visibleColorActive Флаг активности заголовка (меняет цвет текста иконки)
+ * @param content Раскрывающийся контент
+ */
 @Composable
 fun Selection(
     image: Int,
@@ -86,7 +93,7 @@ fun Selection(
                 )
                 Text(
                     text = selectionName,
-                    color = Color.Black,
+                    color = color,
                     style = MatuleTypography.headlineRegular16
                 )
             }

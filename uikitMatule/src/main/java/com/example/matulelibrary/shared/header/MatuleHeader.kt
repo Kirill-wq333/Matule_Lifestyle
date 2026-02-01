@@ -19,6 +19,16 @@ import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.iconbtn.SmallIconButton
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ *
+ * Хеадер, состоящий из 2-х состояний
+ *
+ * @param isCart Состояние хеадера при true - в корзине, а при false - на других экранах
+ * @param visibleSmallIcon Отображение кнопки, возвращающая на предыдущий экран
+ * @param onBack Лямбда-функция, которая возращяет на предыдущий экран
+ * @param headerText Название экрана
+ * @param endIcon Последняя иконка, которая отображается через ресурсы .xml
+ */
 @Composable
 fun MatuleHeader(
     isCart: Boolean = false,

@@ -27,6 +27,14 @@ import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
 import kotlinx.coroutines.launch
 
+/**
+ *
+ * Функция которая отображает данные продукта
+ *
+ * @param content Функция, которая отображает контент
+ * @param nameProduct Текст, который отображает название продукта
+ */
+
 @Composable
 fun MatuleBottomSheet(
     content: @Composable () -> Unit,
@@ -78,6 +86,14 @@ fun MatuleBottomSheet(
     }
 }
 
+/**
+ *
+ * Функция для отображения модального окна
+ *
+ * @param modifier Модификатор для настройки внешнего вида и поведения
+ * @param onDismissRequest Лямбда-функция, где при нажатии на само "модальное окно" сворачивает его.
+ * @param content Функция, которая отображает контент
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MatuleModalBottomSheet(

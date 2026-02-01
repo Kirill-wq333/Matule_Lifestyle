@@ -1,8 +1,21 @@
 package com.example.data.feature.project.request
 
 import com.google.gson.annotations.SerializedName
-import java.io.File
 
+/**
+ *
+ * Запрос на создание проекта
+ *
+ * @property title Название проекта
+ * @property typeProject Тип проекта
+ * @property userId Индификатор пользователя
+ * @property dateStart Дата начала проекта
+ * @property dateEnd Дата окончания проекта
+ * @property gender Пол пользователя
+ * @property descriptionSource Источник описания
+ * @property category Категория
+ * @property image Картинка проекта
+ */
 data class RequestProject(
     val title: String,
     val typeProject: String,
@@ -12,5 +25,5 @@ data class RequestProject(
     val gender: String,
     @SerializedName("description_source")val descriptionSource: String,
     val category: String,
-    val image: File
+    val image: String
 )

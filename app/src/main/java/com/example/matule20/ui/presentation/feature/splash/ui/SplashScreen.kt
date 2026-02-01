@@ -32,13 +32,6 @@ private fun SplashScreenPrev() {
 fun SplashScreen() {
 
     val color = listOf(
-        Brush.verticalGradient(
-            listOf(
-                Color(0xFF74C8E4),
-                Color(0xFF73D5BC),
-                Color(0xFF74C8E4)
-            ),
-        ),
         Brush.linearGradient(
             listOf(
                 Color(0xFFA1CAFF),
@@ -48,11 +41,18 @@ fun SplashScreen() {
         ),
         Brush.verticalGradient(
             listOf(
-                Color(0xFF6269F0),
-                Color(0xFF3740F5),
+                Color(0xFF74C8E4),
+                Color(0xFF73D5BC),
+                Color(0xFF74C8E4)
+            ),
+        ),
+        Brush.verticalGradient(
+            listOf(
+                Color(0xFF6269F0).copy(.05f),
+                Color(0xFF3740F5).copy(.65f),
                 Color(0xFF2254F5),
-                Color(0xFF3740F5),
-                Color(0xFF6269F0)
+                Color(0xFF3740F5).copy(.65f),
+                Color(0xFF6269F0).copy(.05f)
             ),
         ),
     )
