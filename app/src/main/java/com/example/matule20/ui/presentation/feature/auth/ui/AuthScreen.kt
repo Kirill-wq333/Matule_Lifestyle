@@ -62,6 +62,8 @@ private fun Content(
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var emailError by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf("") }
 
     var isSubmitted by remember { mutableStateOf(false) }
 
@@ -84,12 +86,35 @@ private fun Content(
         AuthContent(
             email = email,
             password = password,
-            onEmailChange = { email = it },
-            isSubmitted = isSubmitted,
-            onPasswordChange = { password = it },
-            openProfileScreen = { isSubmitted = true },
+            onEmailChange = {
+                email = it.lowercase()
+                emailError = ""
+            },
+            emailError = if (isSubmitted) emailError else "",
+            passwordError = if (isSubmitted) passwordError else "",
+            onPasswordChange = {
+                password = it
+                passwordError = ""
+            },
+            openProfileScreen = {
+                isSubmitted = true
+
+                emailError = if (email.isEmpty()) {
+                    "Введите email"
+                } else if (!validateEmail(email)) {
+                    "Формат: name@domain.ru только маленькие буквы и цифры"
+                } else {
+                    ""
+                }
+
+                passwordError = if (password.isEmpty()) {
+                    "Введите пароль"
+                } else {
+                    validatePassword(password) ?: ""
+                }
+            },
             openRegisterScreen = {}
-        ) 
+        )
         ActionsAuth(
             onVkClick = {},
             onYandexClick = {}
@@ -101,7 +126,8 @@ private fun Content(
 private fun AuthContent(
     email: String,
     password: String,
-    isSubmitted: Boolean,
+    emailError: String,
+    passwordError: String,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     openProfileScreen: () -> Unit,
@@ -121,16 +147,16 @@ private fun AuthContent(
             text = email,
             placeholder = "example@mail.com",
             onTextChange = onEmailChange,
-            errorText = "Неправильно введен email!",
-            isError = email.isEmpty() && isSubmitted,
+            errorText = emailError,
+            isError = emailError.isNotEmpty(),
             label = true,
             labelText = stringResource(R.string.log_in_email)
         )
         Spacer(modifier = Modifier.height(14.dp))
         PasswordTextField(
             password = password,
-            errorText = "Неправильно введен пароль!",
-            isError = password.isEmpty() && isSubmitted,
+            errorText = passwordError,
+            isError = passwordError.isNotEmpty(),
             onPasswordChange = onPasswordChange,
             labelText = stringResource(R.string.password),
             visibleTrailing = password.isNotEmpty()
@@ -214,4 +240,31 @@ fun TitleAndSubTitleWithImage(
             style = MatuleTypography.textRegular15
         )
     }
+}
+
+fun validateEmail(email: String): Boolean {
+    val emailPattern = "^[a-z0-9]+@[a-z0-9]+\\.[a-z]{2,}\$".toRegex()
+    return emailPattern.matches(email)
+}
+
+fun validatePassword(password: String): String? {
+    val errors = mutableListOf<String>()
+
+    if (password.length < 8) {
+        errors.add("Не менее 8 символов")
+    }
+    if (!password.any { it.isDigit() }) {
+        errors.add("Минимум 1 цифра")
+    }
+    if (!password.any { it.isLowerCase() }) {
+        errors.add("Минимум 1 маленькая буква")
+    }
+    if (!password.any { it.isUpperCase() }) {
+        errors.add("Минимум 1 заглавная буква")
+    }
+    if (!password.any { !it.isLetterOrDigit() }) {
+        errors.add("Минимум 1 спецсимвол (!@#\$%^&*)")
+    }
+
+    return if (errors.isNotEmpty()) errors.joinToString("\n") else null
 }

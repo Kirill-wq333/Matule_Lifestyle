@@ -165,7 +165,9 @@ private fun Item(
             )
         }
         if (visibleToggle) {
-            Toggle()
+            Toggle(
+                onSelectionChange = {}
+            )
         }
     }
 }
