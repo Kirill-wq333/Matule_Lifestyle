@@ -46,9 +46,9 @@ import com.example.matulelibrary.typography.MatuleTypography
  */
 @Composable
 fun Selection(
-    image: Int,
+    image: Int = R.drawable.palm,
     selectionName: String,
-    visibleColorActive: Boolean,
+    visibleColorActive: Boolean = true,
     content: @Composable () -> Unit = {}
 ) {
     var visibleDropMenu by remember { mutableStateOf(false) }

@@ -28,18 +28,21 @@ import com.example.matulelibrary.typography.MatuleTypography
  * @param onBack Лямбда-функция, которая возращяет на предыдущий экран
  * @param headerText Название экрана
  * @param endIcon Последняя иконка, которая отображается через ресурсы .xml
+ * @param visibleEndIcon Отображение правой иконки для других функций
  */
 @Composable
 fun MatuleHeader(
+    modifier: Modifier = Modifier,
     isCart: Boolean = false,
     visibleSmallIcon: Boolean = false,
     onBack: () -> Unit = {},
     headerText: String,
-    endIcon: Int
+    endIcon: Int = R.drawable.ic_plus,
+    visibleEndIcon: Boolean = false
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
@@ -63,11 +66,13 @@ fun MatuleHeader(
                     modifier = Modifier
                         .align(Alignment.Center)
                 )
-                Icon(
-                    imageVector = ImageVector.vectorResource(endIcon),
-                    contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterEnd)
-                )
+                if (visibleEndIcon) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(endIcon),
+                        contentDescription = null,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    )
+                }
             }
         }
 
@@ -85,6 +90,7 @@ fun MatuleHeader(
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_delete),
                     contentDescription = null,
+                    tint = Color(0xFFB8C1CC)
                 )
             }
         }

@@ -41,23 +41,14 @@ fun MatuleBottomSheet(
     nameProduct: String
 ) {
     MatuleModalBottomSheet(
-        modifier = Modifier.fillMaxWidth(),
         onDismissRequest = {}
     ) { hide ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(
-                        topStart = MatuleSpacers.spacer24,
-                        topEnd = MatuleSpacers.spacer24
-                    )
-                )
                 .padding(
                     start = MatuleSpacers.spacer20,
                     end = MatuleSpacers.spacer20,
-                    top = MatuleSpacers.spacer24,
                     bottom = MatuleSpacers.spacer40
                 )
         ) {
@@ -108,6 +99,7 @@ fun MatuleModalBottomSheet(
     ModalBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
+        containerColor = Color.White,
         onDismissRequest = onDismissRequest
     ) {
 

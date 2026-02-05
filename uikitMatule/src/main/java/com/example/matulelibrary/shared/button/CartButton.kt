@@ -29,19 +29,21 @@ import com.example.matulelibrary.typography.MatuleTypography
  *
  * @param price Стоимость продукта(-ов)
  * @param onClick Обработчик нажатия на кнопку
+ * @param modifier Модификатор для настройки внешнего вида и поведения
  */
 
 @Composable
 fun CartButton(
+    modifier: Modifier = Modifier,
     price: Int,
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClick = onClick
+                onClick = onClick,
             )
             .fillMaxWidth()
             .background(color = MatuleColors.accent, shape = RoundedCornerShape(10.dp))

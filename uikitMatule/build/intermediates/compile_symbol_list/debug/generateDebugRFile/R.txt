@@ -1,3 +1,4 @@
+int drawable ic_added_photo 0x0
 int drawable ic_catalog 0x0
 int drawable ic_check 0x0
 int drawable ic_chevron_down 0x0
@@ -26,6 +27,7 @@ int drawable ic_project 0x0
 int drawable ic_search 0x0
 int drawable ic_send 0x0
 int drawable ic_shopping_cart 0x0
+int drawable ic_user 0x0
 int drawable ic_vk_logo 0x0
 int drawable ic_yandex_logo 0x0
 int drawable palm 0x0

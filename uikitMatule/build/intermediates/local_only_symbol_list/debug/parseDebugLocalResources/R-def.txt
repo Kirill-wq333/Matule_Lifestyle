@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+drawable ic_added_photo
 drawable ic_catalog
 drawable ic_check
 drawable ic_chevron_down
@@ -28,6 +29,7 @@ drawable ic_project
 drawable ic_search
 drawable ic_send
 drawable ic_shopping_cart
+drawable ic_user
 drawable ic_vk_logo
 drawable ic_yandex_logo
 drawable palm

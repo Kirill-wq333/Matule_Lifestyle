@@ -32,9 +32,11 @@ import com.example.matulelibrary.typography.MatuleTypography
  * @param isBigBtn Определяет размер кнопки (true - большая, false - маленькая)
  * @param onClick Обработчик нажатия на кнопку
  * @param enable Флаг доступности кнопки (false делает кнопку недоступной)
+ * @param modifier Модификатор для настройки внешнего вида и поведения
  */
 @Composable
 fun MatuleButton(
+    modifier: Modifier = Modifier,
     textBtn: String,
     activeBtn: Boolean = false,
     unactiveBtn: Boolean = false,
@@ -43,7 +45,7 @@ fun MatuleButton(
     onClick: () -> Unit,
     enable: Boolean = true
 ){
-    val buttonModifier = if (isBigBtn) Modifier.fillMaxWidth() else Modifier
+    val buttonModifier = if (isBigBtn) modifier.fillMaxWidth() else modifier
     val verticalPadding = if (isBigBtn) MatuleSpacers.spacer16 else 10.dp
     val horizontalPadding = if (isBigBtn) 0.dp else 15.dp
     val background = when{
