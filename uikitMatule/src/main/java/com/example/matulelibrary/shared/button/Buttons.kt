@@ -24,6 +24,7 @@ import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
 fun MatuleButton(
+    modifier: Modifier = Modifier,
     textBtn: String,
     activeBtn: Boolean = false,
     unactiveBtn: Boolean = false,
@@ -32,7 +33,7 @@ fun MatuleButton(
     onClick: () -> Unit,
     enable: Boolean = true
 ){
-    val buttonModifier = if (isBigBtn) Modifier.fillMaxWidth() else Modifier
+    val buttonModifier = if (isBigBtn) modifier.fillMaxWidth() else modifier
     val verticalPadding = if (isBigBtn) MatuleSpacers.spacer16 else 10.dp
     val horizontalPadding = if (isBigBtn) 0.dp else 15.dp
     val background = when{

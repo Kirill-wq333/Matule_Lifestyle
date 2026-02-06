@@ -38,11 +38,13 @@ import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
 fun SearchTextField(
+    modifier: Modifier = Modifier,
     search: String,
     onSearchChange: (String) -> Unit,
     clearSearch: () -> Unit
 ) {
     MatuleTextField(
+        modifier = modifier,
         text = search,
         onTextChange = onSearchChange,
         trailingIcon = {

@@ -39,6 +39,7 @@ import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
 fun Selection(
+    modifier: Modifier = Modifier,
     image: Int,
     selectionName: String,
     visibleColorActive: Boolean,
@@ -49,7 +50,7 @@ fun Selection(
     val color = if (visibleColorActive) Color.Black else Color(0xFF939396)
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(
                 color = MatuleColors.inputBg,
@@ -86,7 +87,7 @@ fun Selection(
                 )
                 Text(
                     text = selectionName,
-                    color = Color.Black,
+                    color = color,
                     style = MatuleTypography.headlineRegular16
                 )
             }

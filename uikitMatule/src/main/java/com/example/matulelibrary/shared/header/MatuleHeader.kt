@@ -21,15 +21,17 @@ import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
 fun MatuleHeader(
+    modifier: Modifier = Modifier,
     isCart: Boolean = false,
     visibleSmallIcon: Boolean = false,
     onBack: () -> Unit = {},
     headerText: String,
-    endIcon: Int
+    visibleEndIcon: Boolean = false,
+    endIcon: Int = R.drawable.ic_plus
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
@@ -53,11 +55,13 @@ fun MatuleHeader(
                     modifier = Modifier
                         .align(Alignment.Center)
                 )
-                Icon(
-                    imageVector = ImageVector.vectorResource(endIcon),
-                    contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterEnd)
-                )
+                if (visibleEndIcon) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(endIcon),
+                        contentDescription = null,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    )
+                }
             }
         }
 

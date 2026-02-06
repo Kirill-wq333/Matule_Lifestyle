@@ -25,11 +25,12 @@ import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
 fun CartButton(
+    modifier: Modifier = Modifier,
     price: Int,
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,

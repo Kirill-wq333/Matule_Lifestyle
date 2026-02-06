@@ -32,6 +32,9 @@ import com.example.matulelibrary.typography.MatuleTypography
 @Composable
 fun Card(
     nameProduct: String,
+    money: Int = 412,
+    date: String = "dfgd",
+    genre: String = "dfhdhdh",
     visibleClose: Boolean = false,
     visibleCard: Boolean = false,
     visibleCart: Boolean = false,
@@ -83,8 +86,8 @@ fun Card(
         when{
             visibleCard -> {
                 CardItem(
-                    money = 300,
-                    genre = "dfgdfgdg",
+                    money = money,
+                    genre = genre,
                     onClick = { addedProduct = !addedProduct },
                     addedProduct = addedProduct,
                 )
@@ -92,14 +95,14 @@ fun Card(
             visibleCart -> {
                 CartItem(
                     quantity = quantity,
-                    money = 300,
+                    money = money,
                     onPlus = { quantity += 1 },
                     onMinus = { quantity -= 1 }
                 )
             }
             else -> {
                 ProjectItem(
-                    date = "sdfhshsdh"
+                    date = date
                 )
             }
         }
