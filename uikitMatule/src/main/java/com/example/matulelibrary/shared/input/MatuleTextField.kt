@@ -11,7 +11,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,25 +34,35 @@ import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.typography.MatuleTypography
 
-
+/**
+ *
+ * Поле поиска с иконкой лупы.
+ *
+ * @param search Отображаемый текст в строке
+ * @param modifier Модификатор для настройки внешнего вида и поведения
+ * @param onSearchChange Лямбда-функция, позваоляющая писать текст
+ * @param clearSearch Лямбда-функция, которая очищает текст в строке
+ */
 @Composable
 fun SearchTextField(
-    modifier: Modifier = Modifier,
     search: String,
+    modifier: Modifier = Modifier,
     onSearchChange: (String) -> Unit,
     clearSearch: () -> Unit
 ) {
     MatuleTextField(
-        modifier = modifier,
         text = search,
+        modifier = modifier,
         onTextChange = onSearchChange,
         trailingIcon = {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_close),
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable(onClick = clearSearch)
-            )
+            if (search.isNotEmpty()) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_close),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clickable(onClick = clearSearch)
+                )
+            }
         },
         leadingIcon = {
             Icon(
@@ -64,6 +73,17 @@ fun SearchTextField(
     )
 }
 
+/**
+ *
+ * Поле для ввода пароля с переключением видимости.
+ *
+ * @param password Отображаемый пароль в строке
+ * @param onPasswordChange Лямбда-функция, позваоляющая писать текст
+ * @param visibleTrailing Состояние видимости последней иконки
+ * @param labelText Название строки
+ * @param errorText Текст ошибки
+ * @param isError Отображение ошибки
+ */
 @Composable
 fun PasswordTextField(
     password: String,
@@ -91,7 +111,7 @@ fun PasswordTextField(
         visualTransformation = transformation,
         labelText = labelText,
         errorText = errorText,
-        isError = false,
+        isError = isError,
         label = true,
         trailingIcon = {
             if (visibleTrailing) {
@@ -109,6 +129,25 @@ fun PasswordTextField(
     )
 }
 
+/**
+ *
+ * Кастомное текстовое поле с поддержкой различных состояний и визуальных элементов.
+ *
+ * @param text Текущее значение текстового поля
+ * @param onTextChange Callback при изменении текста
+ * @param modifier Модификатор для настройки расположения и размера контейнера
+ * @param placeholder Текст-подсказка, отображаемый когда поле пустое
+ * @param errorText Текст ошибки, отображаемый при isError = true
+ * @param labelText Текст метки, отображаемый над полем
+ * @param keyboardOptions Настройки клавиатуры
+ * @param label Флаг отображения метки над полем
+ * @param isError Флаг состояния ошибки
+ * @param textStyle Стиль основного текста в поле
+ * @param visualTransformation Преобразование отображения текста
+ * @param placeholderStyle Стиль текста плейсхолдера
+ * @param leadingIcon Компонент иконки в начале поля
+ * @param trailingIcon Компонент иконки в конце поля
+ */
 @Composable
 fun MatuleTextField(
     text: String,
@@ -124,7 +163,6 @@ fun MatuleTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     placeholderStyle: TextStyle = MatuleTypography.textRegular15,
     leadingIcon: @Composable (() -> Unit)? = null,
-    colors: TextFieldColors = TextFieldDefaults.colors(),
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     var isFocused by remember { mutableStateOf(false) }

@@ -86,52 +86,32 @@ private fun Content(
     ) {
         AuthContent(
             email = email,
-            emailError = emailError,
-            passwordError = passwordError,
             password = password,
-            onEmailChange = { newEmail ->
-                email = newEmail
-                if (isSubmitted) {
-                    emailError = if (newEmail.isEmpty()) {
-                        "Email обязателен"
-                    } else if (!validateEmail(newEmail)) {
-                        "Введите корректный email"
-                    } else {
-                        ""
-                    }
-                }
+            onEmailChange = {
+                email = it.lowercase()
+                emailError = ""
             },
-            onPasswordChange = { newPassword ->
-                password = newPassword
-                if (isSubmitted) {
-                    val passwordErrors = validatePassword(newPassword)
-                    passwordError = if (passwordErrors.isNotEmpty()) {
-                        passwordErrors.first()
-                    } else {
-                        ""
-                    }
-                }
+            emailError = if (isSubmitted) emailError else "",
+            passwordError = if (isSubmitted) passwordError else "",
+            onPasswordChange = {
+                password = it
+                passwordError = ""
             },
             openProfileScreen = {
                 isSubmitted = true
+
                 emailError = if (email.isEmpty()) {
-                    "Email обязателен"
+                    "Введите email"
                 } else if (!validateEmail(email)) {
-                    "Введите корректный email"
+                    "Формат: name@domain.ru только маленькие буквы и цифры"
                 } else {
                     ""
                 }
 
-                // Валидация пароля
-                val passwordErrors = validatePassword(password)
-                passwordError = if (passwordErrors.isNotEmpty()) {
-                    passwordErrors.first()
+                passwordError = if (password.isEmpty()) {
+                    "Введите пароль"
                 } else {
-                    ""
-                }
-
-                if (emailError.isEmpty() && passwordError.isEmpty()) {
-//                    navController.navigate("profile")
+                    validatePassword(password) ?: ""
                 }
             },
             openRegisterScreen = {}
@@ -142,6 +122,7 @@ private fun Content(
         )
     }
 }
+
 
 @Composable
 private fun AuthContent(
@@ -264,27 +245,28 @@ fun TitleAndSubTitleWithImage(
 }
 
 fun validateEmail(email: String): Boolean {
-    return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    val emailPattern = Patterns.EMAIL_ADDRESS.matcher(email)
+    return emailPattern.matches()
 }
 
-fun validatePassword(password: String): List<String>{
+fun validatePassword(password: String): String? {
     val errors = mutableListOf<String>()
 
     if (password.length < 8) {
-        errors.add("Пароль должен содержать 8 и более символов")
+        errors.add("Не менее 8 символов")
     }
     if (!password.any { it.isDigit() }) {
-        errors.add("Пароль должен содержать хотя бы одну цифру")
+        errors.add("Минимум 1 цифра")
     }
     if (!password.any { it.isLowerCase() }) {
-        errors.add("Пароль должен содержать хотя бы одну строчную букву")
+        errors.add("Минимум 1 маленькая буква")
     }
     if (!password.any { it.isUpperCase() }) {
-        errors.add("Пароль должен содержать хотя бы одну заглавную букву")
+        errors.add("Минимум 1 заглавная буква")
     }
-    if (!password.any { it in "!@#$%^&*()_+-=[]{}|;:,.<>?" }) {
-        errors.add("Пароль должен содержать хотя бы один специальный символ: !@#$%^&*()_+-=[]{}|;:,.<>?")
+    if (!password.any { !it.isLetterOrDigit() }) {
+        errors.add("Минимум 1 спецсимвол (!@#\$%^&*)")
     }
 
-    return errors
+    return if (errors.isNotEmpty()) errors.joinToString("\n") else null
 }

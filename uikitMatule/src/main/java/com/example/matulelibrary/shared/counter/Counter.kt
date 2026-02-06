@@ -19,6 +19,14 @@ import androidx.compose.ui.unit.dp
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 
+/**
+ *
+ * Универсальный компонент прибавления и убавления
+ *
+ * @param onPlus Лямбда-функция, которая при нажатии добавляет товар
+ * @param onMinus Лямбда-функция, которая при нажатии убавляет товар
+ * @param quantity Количество товаров
+ */
 @Composable
 fun Counter(
     onMinus: () -> Unit,

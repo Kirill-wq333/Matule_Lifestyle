@@ -24,7 +24,13 @@ import com.example.matulelibrary.shared.button.iconbtn.SmallIconButton
 import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
 import kotlinx.coroutines.launch
-
+/**
+ *
+ * Функция которая отображает данные продукта
+ *
+ * @param content Функция, которая отображает контент
+ * @param nameProduct Текст, который отображает название продукта
+ */
 @Composable
 fun MatuleBottomSheet(
     content: @Composable () -> Unit,

@@ -2,8 +2,8 @@ package com.example.matulelibrary.shared.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,13 +29,27 @@ import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.counter.Counter
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ *
+ *  Карточка товара в 3-х состояниях
+ *
+ *  @param nameProduct Название продукта
+ *  @param money Цена продукта
+ *  @param genre Товар, присущий полу
+ *  @param date Дата создания проекта
+ *  @param visibleCard Отображение карточки на главном экране при true, а при false для проекта
+ *  @param visibleCart Отображение карточки в корзине при true, а при false для проекта
+ *  @param visibleDelete Отображение кнопки "Удаление товара из корзины"
+ *  @param onDeleteCard Лямбда-функция, которая удаляет товар из корзины
+ */
 @Composable
 fun Card(
     nameProduct: String,
-    money: Int = 412,
-    date: String = "dfgd",
-    genre: String = "dfhdhdh",
-    visibleClose: Boolean = false,
+    money: Int = 300,
+    genre: String = "",
+    date: String = "",
+    visibleDelete: Boolean = false,
+    onDeleteCard: () -> Unit = {},
     visibleCard: Boolean = false,
     visibleCart: Boolean = false,
 ) {
@@ -75,11 +89,13 @@ fun Card(
                 color = Color.Black,
                 style = MatuleTypography.headlineMedium16
             )
-            if (visibleClose) {
+            if (visibleDelete) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_close),
                     contentDescription = null,
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
+                    modifier = Modifier
+                        .clickable(onClick = onDeleteCard)
                 )
             }
         }
@@ -110,13 +126,21 @@ fun Card(
     }
 }
 
+/**
+ *
+ * Компонент Карточки товара на главном экране
+ *
+ * @param money Цена продукта
+ * @param genre Товар, присущий полу
+ * @param onClick Обработчик нажатия кнопки
+ * @param addedProduct Состояние кнопки
+ */
 @Composable
 private fun CardItem(
     money: Int,
     genre: String,
     onClick: () -> Unit,
     addedProduct: Boolean
-
 ) {
     Row(
         modifier = Modifier
@@ -149,6 +173,15 @@ private fun CardItem(
     }
 }
 
+/**
+ *
+ * Компонент карточки товара в корзине
+ *
+ * @param quantity Количество товаров
+ * @param money Товар, присущий полу
+ * @param onPlus Лямбда-функция, которая при нажатии добавляет товар
+ * @param onMinus Лямбда-функция, которая при нажатии убавляет товар
+ */
 @Composable
 fun CartItem(
     quantity: Int,
@@ -185,6 +218,12 @@ fun CartItem(
     }
 }
 
+/**
+ *
+ * Карточка проекта
+ *
+ * @param date Дата создания проекта
+ */
 @Composable
 private fun ProjectItem(
     date: String

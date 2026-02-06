@@ -22,7 +22,14 @@ import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
-
+/**
+ *
+ * Универсальная кнопка при нажатии на которую открывает корзину
+ *
+ * @param price Стоимость продукта(-ов)
+ * @param onClick Обработчик нажатия на кнопку
+ * @param modifier Модификатор для настройки внешнего вида и поведения
+ */
 @Composable
 fun CartButton(
     modifier: Modifier = Modifier,

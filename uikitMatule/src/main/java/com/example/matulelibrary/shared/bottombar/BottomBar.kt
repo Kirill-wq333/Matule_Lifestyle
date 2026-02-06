@@ -29,7 +29,12 @@ import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.shared.divider.MatuleHorizontalDivider
 import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
-
+/**
+ * Нижняя панель навигации для переключения между основными экранами приложения.
+ * Отображает иконки с подписями и подсвечивает активный экран.
+ *
+ * @param navController Контроллер навигации для перехода между экранами.
+ */
 @Composable
 fun BottomBar(
     navController: NavHostController

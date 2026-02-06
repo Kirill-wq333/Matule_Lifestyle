@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,12 +36,19 @@ import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ * Раскрывающаяся секция с заголовком и анимированным контентом.
+ *
+ * @param image Ресурс иконки для заголовка секции
+ * @param selectionName Текст заголовка секции
+ * @param visibleColorActive Флаг активности заголовка (меняет цвет текста иконки)
+ * @param content Раскрывающийся контент
+ */
 @Composable
 fun Selection(
-    modifier: Modifier = Modifier,
-    image: Int,
+    image: Int = R.drawable.palm,
     selectionName: String,
-    visibleColorActive: Boolean,
+    visibleColorActive: Boolean = true,
     content: @Composable () -> Unit = {}
 ) {
     var visibleDropMenu by remember { mutableStateOf(false) }
@@ -50,7 +56,7 @@ fun Selection(
     val color = if (visibleColorActive) Color.Black else Color(0xFF939396)
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(
                 color = MatuleColors.inputBg,

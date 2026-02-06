@@ -1,4 +1,4 @@
-package com.example.matule20.ui.presentation.feature.createPassword.ui
+package com.example.matule20.ui.presentation.feature.projects.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -170,17 +170,4 @@ fun PhotoProject() {
                 )
         )
     }
-}
-
-
-fun validateRepeatPassword(password: String, repeatPassword: String): String? {
-    val errors = mutableListOf<String>()
-
-    if (repeatPassword.isEmpty()) {
-        errors.add("Повторите пароль")
-    } else if (repeatPassword != password) {
-        errors.add("Пароли не совпадают")
-    }
-
-    return if (errors.isNotEmpty()) errors.joinToString("\n") else null
 }

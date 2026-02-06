@@ -19,6 +19,17 @@ import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.iconbtn.SmallIconButton
 import com.example.matulelibrary.typography.MatuleTypography
 
+/**
+ *
+ * Хеадер, состоящий из 2-х состояний
+ *
+ * @param isCart Состояние хеадера при true - в корзине, а при false - на других экранах
+ * @param visibleSmallIcon Отображение кнопки, возвращающая на предыдущий экран
+ * @param onBack Лямбда-функция, которая возращяет на предыдущий экран
+ * @param headerText Название экрана
+ * @param endIcon Последняя иконка, которая отображается через ресурсы .xml
+ * @param visibleEndIcon Отображение правой иконки для других функций
+ */
 @Composable
 fun MatuleHeader(
     modifier: Modifier = Modifier,
@@ -26,8 +37,8 @@ fun MatuleHeader(
     visibleSmallIcon: Boolean = false,
     onBack: () -> Unit = {},
     headerText: String,
-    visibleEndIcon: Boolean = false,
-    endIcon: Int = R.drawable.ic_plus
+    endIcon: Int = R.drawable.ic_plus,
+    visibleEndIcon: Boolean = false
 ) {
 
     Column(
@@ -79,6 +90,7 @@ fun MatuleHeader(
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_delete),
                     contentDescription = null,
+                    tint = Color(0xFFB8C1CC)
                 )
             }
         }

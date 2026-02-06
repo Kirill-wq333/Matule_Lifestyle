@@ -11,7 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -20,6 +19,12 @@ import androidx.compose.ui.unit.dp
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 
+/**
+ *
+ * Универсальная Большая кнопка
+ *
+ * @param onClick Обработчик нажатия кнопки
+ */
 @Composable
 fun BigIconButton(onClick: () -> Unit) {
     SmallIconButton(
@@ -29,7 +34,17 @@ fun BigIconButton(onClick: () -> Unit) {
         onClick = onClick,
     )
 }
-
+/**
+ *
+ * Универсальная маленькая кнопка
+ *
+ * @param modifier Модификатор для настройки внешнего вида и поведения
+ * @param shape Округление кнопки,
+ * @param icon Иконка на кнопке
+ * @param padding Отступ со всех сторон от иконки
+ * @param size размер иконки
+ * @param onClick Обработчик нажатия кнопки
+ */
 @Composable
 fun SmallIconButton(
     modifier: Modifier = Modifier,

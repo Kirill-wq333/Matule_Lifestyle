@@ -11,17 +11,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.matulelibrary.color.MatuleColors
 
+/**
+ *
+ * Переключатель (Toggle/Switch) с анимированным переключением состояния.
+ *
+ * @param isSelected Начальное состояние переключателя (true - включен, false - выключен)
+ * @param onSelectionChange Callback при изменении состояния переключателя
+ */
 @Composable
-fun Toggle() {
-    var isSelected by remember { mutableStateOf(false) }
+fun Toggle(
+    isSelected: Boolean = false,
+    onSelectionChange: (Boolean) -> Unit,
+) {
     val backColor by animateColorAsState(
         targetValue = if (isSelected) MatuleColors.accent else MatuleColors.inputStroke,
         animationSpec = tween(500)
@@ -38,7 +44,7 @@ fun Toggle() {
     Box(
         modifier = Modifier
             .clickable(
-                onClick = { isSelected = !isSelected }
+                onClick = { onSelectionChange(!isSelected) }
             )
             .background(
                 color = backColor,
