@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.matule20.ui.presentation.feature.auth.ui.TitleAndSubTitleWithImage
+import com.example.matule20.ui.presentation.feature.auth.ui.validatePassword
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.input.PasswordTextField
@@ -41,6 +42,9 @@ private fun Content() {
 
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf("") }
+    var repeatPasswordError by remember { mutableStateOf("") }
+    var isSubmitted by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -62,10 +66,56 @@ private fun Content() {
         )
         CreatePasswordContent(
             password = password,
-            onSavePassword = {},
+            onSavePassword = {
+                isSubmitted = true
+                val passwordErrors = validatePassword(password)
+                passwordError = if (passwordErrors.isNotEmpty()) {
+                    passwordErrors.first()
+                } else {
+                    ""
+                }
+
+                // Валидация повторного пароля
+                repeatPasswordError = if (repeatPassword.isEmpty()) {
+                    "Повторите пароль"
+                } else if (password != repeatPassword) {
+                    "Пароли не совпадают"
+                } else {
+                    ""
+                }
+
+                // Если ошибок нет - сохраняем пароль
+                if (passwordError.isEmpty() && repeatPasswordError.isEmpty()) {
+                }
+
+            },
             repeatPassword = repeatPassword,
-            onPasswordChange = { password = it },
-            onRepeatPasswordChange = { repeatPassword = it }
+            onPasswordChange = { newPassword ->
+                password = newPassword
+                if (isSubmitted) {
+                    val errors = validatePassword(newPassword)
+                    passwordError = if (errors.isNotEmpty()) errors.first() else ""
+
+                    // Проверяем совпадение паролей
+                    if (repeatPassword.isNotEmpty() && newPassword != repeatPassword) {
+                        repeatPasswordError = "Пароли не совпадают"
+                    } else if (repeatPassword.isNotEmpty() && newPassword == repeatPassword) {
+                        repeatPasswordError = ""
+                    }
+                }
+            },
+            passwordError = passwordError,
+            repeatPasswordError = repeatPasswordError,
+            onRepeatPasswordChange = { newRepeatPassword ->
+                repeatPassword = newRepeatPassword
+                if (isSubmitted) {
+                    if (password.isNotEmpty() && newRepeatPassword != password) {
+                        repeatPasswordError = "Пароли не совпадают"
+                    } else {
+                        repeatPasswordError = ""
+                    }
+                }
+            }
         )
     }
 }
@@ -74,6 +124,8 @@ private fun Content() {
 fun CreatePasswordContent(
     password: String,
     onSavePassword: () -> Unit,
+    repeatPasswordError: String,
+    passwordError: String,
     repeatPassword: String,
     onPasswordChange: (String) -> Unit,
     onRepeatPasswordChange: (String) -> Unit
@@ -87,6 +139,8 @@ fun CreatePasswordContent(
             onPasswordChange = onPasswordChange,
             visibleTrailing = true,
             labelText = stringResource(R.string.new_password),
+            errorText = passwordError,
+            isError = passwordError.isNotEmpty()
         )
         Spacer(modifier = Modifier.height(12.dp))
         PasswordTextField(
@@ -94,9 +148,8 @@ fun CreatePasswordContent(
             onPasswordChange = onRepeatPasswordChange,
             visibleTrailing = true,
             labelText = stringResource(R.string.repeat_the_password),
-            errorText = "Пароль не совпадает",
-            isError = password != repeatPassword
-        )
+            errorText = repeatPasswordError,
+            isError = repeatPasswordError.isNotEmpty()        )
         Spacer(modifier = Modifier.height(10.dp))
         MatuleButton(
             textBtn = stringResource(R.string.btn_save),
@@ -106,4 +159,8 @@ fun CreatePasswordContent(
             onClick = onSavePassword
         )
     }
+}
+
+fun validateCreatePassword(createPassword: String, repeatPassword: String): Boolean {
+    return createPassword == repeatPassword && validatePassword(createPassword).isEmpty()
 }

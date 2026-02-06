@@ -1,5 +1,6 @@
 package com.example.matule20.ui.presentation.feature.auth.ui
 
+import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -62,6 +63,8 @@ private fun Content(
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var emailError by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf("") }
 
     var isSubmitted by remember { mutableStateOf(false) }
 
@@ -83,13 +86,56 @@ private fun Content(
     ) {
         AuthContent(
             email = email,
+            emailError = emailError,
+            passwordError = passwordError,
             password = password,
-            onEmailChange = { email = it },
-            isSubmitted = isSubmitted,
-            onPasswordChange = { password = it },
-            openProfileScreen = { isSubmitted = true },
+            onEmailChange = { newEmail ->
+                email = newEmail
+                if (isSubmitted) {
+                    emailError = if (newEmail.isEmpty()) {
+                        "Email обязателен"
+                    } else if (!validateEmail(newEmail)) {
+                        "Введите корректный email"
+                    } else {
+                        ""
+                    }
+                }
+            },
+            onPasswordChange = { newPassword ->
+                password = newPassword
+                if (isSubmitted) {
+                    val passwordErrors = validatePassword(newPassword)
+                    passwordError = if (passwordErrors.isNotEmpty()) {
+                        passwordErrors.first()
+                    } else {
+                        ""
+                    }
+                }
+            },
+            openProfileScreen = {
+                isSubmitted = true
+                emailError = if (email.isEmpty()) {
+                    "Email обязателен"
+                } else if (!validateEmail(email)) {
+                    "Введите корректный email"
+                } else {
+                    ""
+                }
+
+                // Валидация пароля
+                val passwordErrors = validatePassword(password)
+                passwordError = if (passwordErrors.isNotEmpty()) {
+                    passwordErrors.first()
+                } else {
+                    ""
+                }
+
+                if (emailError.isEmpty() && passwordError.isEmpty()) {
+//                    navController.navigate("profile")
+                }
+            },
             openRegisterScreen = {}
-        ) 
+        )
         ActionsAuth(
             onVkClick = {},
             onYandexClick = {}
@@ -101,7 +147,8 @@ private fun Content(
 private fun AuthContent(
     email: String,
     password: String,
-    isSubmitted: Boolean,
+    emailError: String,
+    passwordError: String,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     openProfileScreen: () -> Unit,
@@ -121,16 +168,16 @@ private fun AuthContent(
             text = email,
             placeholder = "example@mail.com",
             onTextChange = onEmailChange,
-            errorText = "Неправильно введен email!",
-            isError = email.isEmpty() && isSubmitted,
+            errorText = emailError,
+            isError = emailError.isNotEmpty(),
             label = true,
             labelText = stringResource(R.string.log_in_email)
         )
         Spacer(modifier = Modifier.height(14.dp))
         PasswordTextField(
             password = password,
-            errorText = "Неправильно введен пароль!",
-            isError = password.isEmpty() && isSubmitted,
+            errorText = passwordError,
+            isError = passwordError.isNotEmpty(),
             onPasswordChange = onPasswordChange,
             labelText = stringResource(R.string.password),
             visibleTrailing = password.isNotEmpty()
@@ -214,4 +261,30 @@ fun TitleAndSubTitleWithImage(
             style = MatuleTypography.textRegular15
         )
     }
+}
+
+fun validateEmail(email: String): Boolean {
+    return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+}
+
+fun validatePassword(password: String): List<String>{
+    val errors = mutableListOf<String>()
+
+    if (password.length < 8) {
+        errors.add("Пароль должен содержать 8 и более символов")
+    }
+    if (!password.any { it.isDigit() }) {
+        errors.add("Пароль должен содержать хотя бы одну цифру")
+    }
+    if (!password.any { it.isLowerCase() }) {
+        errors.add("Пароль должен содержать хотя бы одну строчную букву")
+    }
+    if (!password.any { it.isUpperCase() }) {
+        errors.add("Пароль должен содержать хотя бы одну заглавную букву")
+    }
+    if (!password.any { it in "!@#$%^&*()_+-=[]{}|;:,.<>?" }) {
+        errors.add("Пароль должен содержать хотя бы один специальный символ: !@#$%^&*()_+-=[]{}|;:,.<>?")
+    }
+
+    return errors
 }
