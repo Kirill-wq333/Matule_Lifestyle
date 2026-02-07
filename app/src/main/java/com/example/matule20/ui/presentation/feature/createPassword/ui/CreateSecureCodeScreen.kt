@@ -37,6 +37,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.typography.MatuleTypography
@@ -45,14 +48,21 @@ import kotlinx.coroutines.delay
 @Preview
 @Composable
 private fun Prev() {
-    CreateSecureCodeScreen()
+    CreateSecureCodeScreen(navController = rememberNavController())
 }
 
 @Composable
-fun CreateSecureCodeScreen() {
+fun CreateSecureCodeScreen(
+    navController: NavHostController
+) {
 
     var code by rememberSaveable { mutableStateOf("") }
-
+    LaunchedEffect(code.length) {
+        if (code.length == 4){
+            delay(1500)
+            navController.navigate(AppRoutes.PROFILE)
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()

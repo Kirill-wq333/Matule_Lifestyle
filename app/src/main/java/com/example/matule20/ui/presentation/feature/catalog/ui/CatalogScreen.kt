@@ -1,6 +1,7 @@
 package com.example.matule20.ui.presentation.feature.catalog.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.CartButton
 import com.example.matulelibrary.shared.button.ChipsButton
@@ -36,15 +40,19 @@ import com.example.matulelibrary.shared.input.SearchTextField
 @Preview
 @Composable
 private fun CatalogScreenPrev() {
-    CatalogScreen()
+    CatalogScreen(navController = rememberNavController())
 }
 @Composable
-fun CatalogScreen() {
-    Content()
+fun CatalogScreen(navController: NavHostController) {
+    Content(
+        navController = navController
+    )
 }
 
 @Composable
-fun Content() {
+fun Content(
+    navController: NavHostController
+) {
     var search by remember { mutableStateOf("") }
     val genres = listOf(
         "Все", "Мужчинам", "Женщинам"
@@ -59,14 +67,15 @@ fun Content() {
             genres = genres,
             search = search,
             onSearchChange = { search = it },
-            clearSearch = { search = "" }
+            clearSearch = { search = "" },
+            openProfileScreen = { navController.navigate(AppRoutes.PROFILE) }
         )
         CartButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(horizontal = 20.dp),
             price = 5325,
-            onClick = {}
+            onClick = { navController.navigate(AppRoutes.CART) }
         )
     }
 }
@@ -75,6 +84,7 @@ fun Content() {
 fun CatalogContent(
     genres: List<String>,
     search: String,
+    openProfileScreen: () -> Unit,
     onSearchChange: (String) -> Unit,
     clearSearch: () -> Unit
 ) {
@@ -85,7 +95,8 @@ fun CatalogContent(
         SearchAndProfile(
             search = search,
             onSearchChange = onSearchChange,
-            clearSearch = clearSearch
+            clearSearch = clearSearch,
+            openProfileScreen = openProfileScreen
         )
         Spacer(modifier = Modifier.height(32.dp))
         LazyRow(
@@ -122,7 +133,8 @@ fun CatalogContent(
 fun SearchAndProfile(
     search: String,
     onSearchChange: (String) -> Unit,
-    clearSearch: () -> Unit
+    clearSearch: () -> Unit,
+    openProfileScreen: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -140,7 +152,9 @@ fun SearchAndProfile(
         )
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_user),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier
+                .clickable(onClick = openProfileScreen)
         )
     }
 }

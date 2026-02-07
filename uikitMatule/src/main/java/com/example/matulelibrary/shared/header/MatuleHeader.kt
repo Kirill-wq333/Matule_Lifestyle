@@ -1,5 +1,6 @@
 package com.example.matulelibrary.shared.header
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import com.example.matulelibrary.typography.MatuleTypography
  * @param headerText Название экрана
  * @param endIcon Последняя иконка, которая отображается через ресурсы .xml
  * @param visibleEndIcon Отображение правой иконки для других функций
+ * @param addedNewProject Лямбда-функция, которая переходит на экран создания проекта
  */
 @Composable
 fun MatuleHeader(
@@ -37,6 +39,7 @@ fun MatuleHeader(
     visibleSmallIcon: Boolean = false,
     onBack: () -> Unit = {},
     headerText: String,
+    addedNewProject: () -> Unit = {},
     endIcon: Int = R.drawable.ic_plus,
     visibleEndIcon: Boolean = false
 ) {
@@ -70,7 +73,9 @@ fun MatuleHeader(
                     Icon(
                         imageVector = ImageVector.vectorResource(endIcon),
                         contentDescription = null,
-                        modifier = Modifier.align(Alignment.CenterEnd)
+                        modifier = Modifier
+                            .clickable(onClick = addedNewProject)
+                            .align(Alignment.CenterEnd)
                     )
                 }
             }

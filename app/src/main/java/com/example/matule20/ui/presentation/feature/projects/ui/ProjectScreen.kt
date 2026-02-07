@@ -14,6 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.card.Card
 import com.example.matulelibrary.shared.header.MatuleHeader
@@ -21,16 +24,22 @@ import com.example.matulelibrary.shared.header.MatuleHeader
 @Preview
 @Composable
 private fun ProjectsScreenPrev() {
-    ProjectsScreen()
+    ProjectsScreen(navController = rememberNavController())
 }
 
 @Composable
-fun ProjectsScreen() {
-    Content()
+fun ProjectsScreen(
+    navController: NavHostController
+) {
+    Content(
+        navController = navController
+    )
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +52,9 @@ private fun Content() {
         MatuleHeader(
             headerText = stringResource(R.string.projects),
             onBack = {},
-            endIcon = R.drawable.ic_plus
+            visibleEndIcon = true,
+            endIcon = R.drawable.ic_plus,
+            addedNewProject = { navController.navigate(AppRoutes.CREATE_PROJECT) }
         )
         Spacer(modifier = Modifier.height(18.dp))
         ProjectsContent()

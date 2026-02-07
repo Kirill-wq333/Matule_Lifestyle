@@ -2,19 +2,12 @@ package com.example.matule20.ui.presentation.feature.createPassword.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,151 +16,150 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
+import com.example.matule20.ui.presentation.feature.auth.ui.TitleAndSubTitleWithImage
+import com.example.matule20.ui.presentation.feature.auth.ui.validatePassword
 import com.example.matulelibrary.R
-import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.shared.button.MatuleButton
-import com.example.matulelibrary.shared.header.MatuleHeader
-import com.example.matulelibrary.shared.input.MatuleTextField
-import com.example.matulelibrary.shared.selection.Selection
-import com.example.matulelibrary.typography.MatuleTypography
+import com.example.matulelibrary.shared.input.PasswordTextField
 
 @Preview
 @Composable
-private fun CreateProjectScreenPrev() {
-    CreateProjectScreen()
+private fun CreatePasswordPrev() {
+    CreatePasswordScreen(rememberNavController())
+}
+
+
+@Composable
+fun CreatePasswordScreen(navController: NavHostController) {
+    Content(navController = navController)
 }
 
 @Composable
-fun CreateProjectScreen() {
-    Content()
-}
+private fun Content(
+    navController: NavHostController
+) {
 
-@Composable
-private fun Content() {
-    var nameProject by remember { mutableStateOf("") }
-    var dateEnd by remember { mutableStateOf("") }
-    var dateStart by remember { mutableStateOf("") }
-    var sourceDescription by remember { mutableStateOf("") }
-
+    var password by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf("") }
+    var repeatPassword by remember { mutableStateOf("") }
+    var repeatPasswordError by remember { mutableStateOf("") }
+    var isSubmit by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(color = Color.White)
-            .padding(top = 28.dp, bottom = 15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(
+                color = Color.White
+            )
+            .padding(
+                start = 20.dp,
+                end = 20.dp,
+                top = 59.dp
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(90.dp)
     ) {
-        MatuleHeader(
-            modifier = Modifier
-                .padding(horizontal = 20.dp),
-            headerText = stringResource(R.string.btn_create_a_project),
+        TitleAndSubTitleWithImage(
+            title = R.string.creating_password,
+            subTitle = R.string.enter_new_password
         )
-        Spacer(modifier = Modifier.height(13.dp))
-        LabelAndSelection(
-            modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label = stringResource(R.string.type)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        MatuleTextField(
-            modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label =  true,
-            labelText = stringResource(R.string.name_project),
-            text = nameProject,
-            onTextChange = { nameProject = it }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        MatuleTextField(
-            modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label =  true,
-            labelText = stringResource(R.string.start_date),
-            text = dateStart,
-            onTextChange = { dateStart = it }
-        )
-        Spacer(modifier = Modifier.height(22.dp))
-        MatuleTextField(
-            modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label =  true,
-            labelText = stringResource(R.string.end_date),
-            text = dateEnd,
-            onTextChange = { dateEnd = it }
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        LabelAndSelection(
-            modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label = stringResource(R.string.whom)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        MatuleTextField(
-            modifier = Modifier.padding(start = 23.dp, end = 17.dp),
-            label =  true,
-            labelText = stringResource(R.string.end_date),
-            text = sourceDescription,
-            onTextChange = { sourceDescription = it }
-        )
-        Spacer(modifier = Modifier.height(17.dp))
-        LabelAndSelection(
-            modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label = stringResource(R.string.category)
-        )
-        Spacer(modifier = Modifier.height(37.dp))
-        PhotoProject()
-        Spacer(modifier = Modifier.height(32.dp))
-        MatuleButton(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            textBtn = stringResource(R.string.btn_),
-            activeBtn = true,
-            onClick = {}
+        CreatePasswordContent(
+            password = password,
+            onSavePassword = {
+                isSubmit = true
+                passwordError = if (password.isEmpty()) {
+                    "Введите пароль"
+                } else {
+                    validatePassword(password) ?: ""
+                }
+                repeatPasswordError = if (repeatPassword.isEmpty()) {
+                    "Введите пароль"
+                } else {
+                    validateRepeatPassword(
+                        password = password,
+                        repeatPassword = repeatPassword,
+                    ) ?: ""
+                }
+                if (passwordError.isEmpty() && repeatPasswordError.isEmpty()){
+                    navController.navigate(AppRoutes.CREATE_SECURE_CODE_PASSWORD)
+                }
+            },
+            repeatPassword = repeatPassword,
+            onPasswordChange = {
+                password = it
+                if (isSubmit) {
+                    passwordError = if (it.isEmpty()) {
+                        "Введите пароль"
+                    } else {
+                        validatePassword(it) ?: ""
+                    }
+                    repeatPasswordError = validateRepeatPassword(it, repeatPassword) ?: ""
+                } else {
+                    passwordError = ""
+                }
+            },
+            repeatPasswordError = repeatPasswordError,
+            passwordError = passwordError,
+            onRepeatPasswordChange = {
+                repeatPassword = it
+                repeatPasswordError = if (isSubmit) {
+                    if (it.isEmpty()) {
+                        "Повторите пароль"
+                    } else {
+                        validateRepeatPassword(password, it) ?: ""
+                    }
+                } else {
+                    ""
+                }
+            }
         )
     }
 }
 
 @Composable
-fun LabelAndSelection(
-    modifier: Modifier = Modifier,
-    label: String
+fun CreatePasswordContent(
+    password: String,
+    onSavePassword: () -> Unit,
+    repeatPassword: String,
+    repeatPasswordError: String,
+    passwordError: String,
+    onPasswordChange: (String) -> Unit,
+    onRepeatPasswordChange: (String) -> Unit
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            text = label,
-            color = MatuleColors.description,
-            style = MatuleTypography.captionRegular14
-        )
-        Selection(
-            selectionName = "прваолпрвло",
-        )
-    }
-}
-
-@Composable
-fun PhotoProject() {
-    Box(
         modifier = Modifier
-            .background(
-                color = MatuleColors.inputBg,
-                shape = RoundedCornerShape(10.dp)
-            )
+            .fillMaxWidth()
     ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_added_photo),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(
-                    top = 56.dp,
-                    start = 62.dp,
-                    end = 60.dp,
-                    bottom = 56.dp
-                )
+        PasswordTextField(
+            password = password,
+            onPasswordChange = onPasswordChange,
+            errorText = passwordError,
+            isError = passwordError.isNotEmpty(),
+            visibleTrailing = true,
+            labelText = stringResource(R.string.new_password),
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        PasswordTextField(
+            password = repeatPassword,
+            onPasswordChange = onRepeatPasswordChange,
+            visibleTrailing = true,
+            labelText = stringResource(R.string.repeat_the_password),
+            errorText = repeatPasswordError,
+            isError = repeatPasswordError.isNotEmpty()
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        MatuleButton(
+            textBtn = stringResource(R.string.btn_save),
+            enable = password.isNotEmpty() && repeatPassword.isNotEmpty(),
+            activeBtn = password.isNotEmpty() && repeatPassword.isNotEmpty(),
+            unactiveBtn = password.isEmpty() || repeatPassword.isEmpty(),
+            onClick = onSavePassword
         )
     }
 }

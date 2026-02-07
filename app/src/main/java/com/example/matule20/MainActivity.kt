@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.NavigationHost
 import com.example.matule20.ui.theme.Matule20Theme
 
 class MainActivity : ComponentActivity() {
@@ -12,6 +14,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Matule20Theme {
+                val navController = rememberNavController()
+                NavigationHost(
+                   navController = navController
+                )
             }
         }
     }

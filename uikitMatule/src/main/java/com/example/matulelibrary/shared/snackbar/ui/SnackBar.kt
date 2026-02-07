@@ -1,4 +1,4 @@
-package com.example.matulelibrary.shared.snackbar
+package com.example.matulelibrary.shared.snackbar.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

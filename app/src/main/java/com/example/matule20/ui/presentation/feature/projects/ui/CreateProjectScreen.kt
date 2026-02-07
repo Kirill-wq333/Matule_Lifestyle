@@ -28,6 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.shared.button.MatuleButton
@@ -39,16 +42,18 @@ import com.example.matulelibrary.typography.MatuleTypography
 @Preview
 @Composable
 private fun CreateProjectScreenPrev() {
-    CreateProjectScreen()
+    CreateProjectScreen(navController = rememberNavController())
 }
 
 @Composable
-fun CreateProjectScreen() {
-    Content()
+fun CreateProjectScreen(navController: NavHostController) {
+    Content(navController = navController)
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    navController: NavHostController
+) {
     var nameProject by remember { mutableStateOf("") }
     var dateEnd by remember { mutableStateOf("") }
     var dateStart by remember { mutableStateOf("") }
@@ -122,7 +127,7 @@ private fun Content() {
             modifier = Modifier.padding(horizontal = 20.dp),
             textBtn = stringResource(R.string.btn_),
             activeBtn = true,
-            onClick = {}
+            onClick = { navController.navigate(AppRoutes.PROJECTS)}
         )
     }
 }

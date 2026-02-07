@@ -17,6 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.card.Card
@@ -26,23 +29,27 @@ import com.example.matulelibrary.typography.MatuleTypography
 @Preview
 @Composable
 private fun CartScreenPrev() {
-    CartScreen()
+    CartScreen(navController = rememberNavController())
 }
 
 @Composable
-fun CartScreen() {
-    Content()
+fun CartScreen(navController: NavHostController) {
+    Content(onBack = { navController.popBackStack() })
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    onBack: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White)
             .padding(top = 16.dp, bottom = 32.dp),
     ) {
-        CartContent()
+        CartContent(
+            onBack = onBack
+        )
         MatuleButton(
             textBtn = stringResource(R.string.go_to_checkout),
             onClick = {},
@@ -55,7 +62,9 @@ private fun Content() {
 }
 
 @Composable
-fun CartContent() {
+fun CartContent(
+    onBack: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -64,6 +73,7 @@ fun CartContent() {
         MatuleHeader(
             headerText = stringResource(R.string.cart),
             isCart = true,
+            onBack = onBack,
             visibleSmallIcon = true,
             modifier = Modifier
                 .padding(start = 20.dp, end = 26.dp)

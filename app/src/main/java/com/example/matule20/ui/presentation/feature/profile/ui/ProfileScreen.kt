@@ -15,6 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +27,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.shared.toggle.Toggle
@@ -31,16 +38,20 @@ import com.example.matulelibrary.typography.MatuleTypography
 @Preview
 @Composable
 private fun ProfilePrev() {
-    ProfileScreen()
+    ProfileScreen(navController = rememberNavController())
 }
 
 @Composable
-fun ProfileScreen() {
-    Content()
+fun ProfileScreen(navController: NavHostController) {
+    Content(
+        navController = navController
+    )
 }
 
 @Composable
-fun Content() {
+fun Content(
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -84,7 +95,7 @@ fun Content() {
                     style = MatuleTypography.textMedium15,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .clickable(onClick = {})
+                        .clickable(onClick = {navController.navigate(AppRoutes.AUTH)})
                 )
             }
         }
@@ -137,6 +148,7 @@ private fun Item(
     text: Int,
     visibleToggle: Boolean = false
 ) {
+    var isSelectedToggle by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -165,7 +177,10 @@ private fun Item(
             )
         }
         if (visibleToggle) {
-            Toggle()
+            Toggle(
+                isSelected = isSelectedToggle,
+                onSelectionChange = { isSelectedToggle = !isSelectedToggle }
+            )
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -20,16 +21,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
+import kotlinx.coroutines.delay
 
 @Preview
 @Composable
 private fun SplashScreenPrev() {
-    SplashScreen()
+    SplashScreen(
+        navController = rememberNavController()
+    )
 }
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    navController: NavHostController
+) {
 
     val color = listOf(
         Brush.verticalGradient(
@@ -56,6 +65,11 @@ fun SplashScreen() {
             ),
         ),
     )
+
+    LaunchedEffect(Unit) {
+        delay(1500)
+        navController.navigate(AppRoutes.AUTH)
+    }
 
 
     color.forEach {

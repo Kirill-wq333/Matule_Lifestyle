@@ -100,6 +100,7 @@ fun Selection(
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_chevron_down),
                 contentDescription = null,
+                tint = MatuleColors.description,
                 modifier = Modifier
                     .rotate(
                         if (visibleDropMenu) 180f else 0f

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,8 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.input.MatuleTextField
@@ -30,16 +35,20 @@ import com.example.matulelibrary.typography.MatuleTypography
 @Preview
 @Composable
 private fun RegisterPrev() {
-    RegisterScreen()
+    RegisterScreen(navController = rememberNavController())
 }
 
 @Composable
-fun RegisterScreen() {
-    Content()
+fun RegisterScreen(
+    navController: NavHostController
+) {
+    Content(navController = navController)
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    navController: NavHostController
+) {
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -85,7 +94,10 @@ private fun Content() {
             activeBtn = activeBtn,
             unactiveBtn = unActiveBtn,
             enable = activeBtn,
-            onClick = {isSubmitted = true}
+            onClick = {
+                isSubmitted = true
+                navController.navigate(AppRoutes.CREATE_NEW_PASSWORD)
+            }
         )
     }
 }
@@ -147,6 +159,7 @@ private fun RegisterContent(
             text = mail,
             errorText = "Это поле обязательно!",
             isError = mail.isEmpty() && isSubmitted,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeholder = "Почта",
             onTextChange = onMailChange
         )

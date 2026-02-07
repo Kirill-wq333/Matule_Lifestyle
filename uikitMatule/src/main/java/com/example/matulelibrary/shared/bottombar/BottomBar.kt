@@ -37,27 +37,31 @@ import com.example.matulelibrary.typography.MatuleTypography
  */
 @Composable
 fun BottomBar(
-    navController: NavHostController
+    navController: NavHostController,
+    routesMain: String,
+    routesCatalog: String,
+    routesProjects: String,
+    routesProfile: String
 ) {
 
     val bottomBar = listOf(
         BottomBarDC(
-            route = "",
+            route = routesMain,
             name = R.string.main,
             icon = R.drawable.ic_main
         ),
         BottomBarDC(
-            route = "",
+            route = routesCatalog,
             name = R.string.catalog,
             icon = R.drawable.ic_catalog
         ),
         BottomBarDC(
-            route = "",
+            route = routesProjects,
             name = R.string.projects,
             icon = R.drawable.ic_project
         ),
         BottomBarDC(
-            route = "",
+            route = routesProfile,
             name = R.string.profile,
             icon = R.drawable.ic_profile
         )
