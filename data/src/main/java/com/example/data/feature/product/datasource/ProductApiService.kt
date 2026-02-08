@@ -1,7 +1,7 @@
 package com.example.data.feature.product.datasource
 
-import com.example.data.feature.product.model.Product
-import com.example.data.feature.product.response.ResponseProduct
+import com.example.data.feature.product.dto.ProductDto
+import com.example.data.feature.product.dto.response.ResponseProduct
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
 import retrofit2.http.GET
@@ -32,6 +32,6 @@ interface ProductApiService {
      */
     @WithAuthorization
     @GET("${NetworkConfig.Routes.PRODUCTS}/{id_product}")
-    suspend fun getProduct(@Path("id_product") idProduct: Int): Product
+    suspend fun getProduct(@Path("id_product") idProduct: Int): ProductDto
 
 }

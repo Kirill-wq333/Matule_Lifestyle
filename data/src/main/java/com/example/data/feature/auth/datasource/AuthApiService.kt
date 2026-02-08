@@ -1,9 +1,9 @@
 package com.example.data.feature.auth.datasource
 
-import com.example.data.feature.auth.request.RequestAuth
-import com.example.data.feature.auth.request.RequestRegister
-import com.example.data.feature.auth.response.ResponseAuth
-import com.example.data.feature.auth.response.ResponseRegister
+import com.example.data.feature.auth.dto.request.RequestAuth
+import com.example.data.feature.auth.dto.request.RequestRegister
+import com.example.data.feature.auth.dto.response.ResponseAuth
+import com.example.data.feature.auth.dto.response.ResponseRegister
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
 import retrofit2.http.DELETE

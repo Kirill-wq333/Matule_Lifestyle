@@ -1,8 +1,8 @@
 package com.example.data.feature.project.datasource
 
-import com.example.data.feature.project.request.RequestProject
-import com.example.data.feature.project.response.Project
-import com.example.data.feature.project.response.ResponseProject
+import com.example.data.feature.project.dto.ProjectDto
+import com.example.data.feature.project.dto.request.RequestProject
+import com.example.data.feature.project.dto.response.ResponseProject
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
 import retrofit2.http.GET
@@ -23,7 +23,7 @@ interface ProjectApiService {
      */
     @WithAuthorization
     @POST(NetworkConfig.Routes.PROJECT)
-    suspend fun postProject(request: RequestProject): Project
+    suspend fun postProject(request: RequestProject): ProjectDto
 
     /**
      *
@@ -33,6 +33,6 @@ interface ProjectApiService {
      */
     @WithAuthorization
     @GET(NetworkConfig.Routes.PROJECT)
-    suspend fun getProject(): ResponseProject
+    suspend fun getProjects(): ResponseProject
 
 }

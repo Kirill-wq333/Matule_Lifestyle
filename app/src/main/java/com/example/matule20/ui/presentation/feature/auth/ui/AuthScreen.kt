@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.matule20.ui.presentation.approutes.AppRoutes
+import com.example.matule20.ui.presentation.feature.auth.viewmodel.AuthViewModel
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
 import com.example.matulelibrary.shared.button.LogInButton
@@ -42,25 +43,21 @@ import com.example.matulelibrary.shared.input.PasswordTextField
 import com.example.matulelibrary.spacers.MatuleSpacers
 import com.example.matulelibrary.typography.MatuleTypography
 
-@Preview
-@Composable
-private fun AuthPrev() {
-    AuthScreen(
-        navController = rememberNavController()
-    )
-}
 
 @Composable
 fun AuthScreen(
+    vm: AuthViewModel,
     navController: NavHostController
 ) {
     Content(
+        vm = vm,
         navController = navController
     )
 }
 
 @Composable
 private fun Content(
+    vm: AuthViewModel,
     navController: NavHostController
 ) {
 
@@ -118,6 +115,7 @@ private fun Content(
                 }
 
                 if(emailError.isEmpty() && passwordError.isEmpty()){
+                    vm.auth(email, password)
                     navController.navigate(AppRoutes.PROFILE)
                 }
             },

@@ -41,6 +41,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation (libs.androidx.hilt.navigation.compose)
+    kapt (libs.androidx.hilt.compiler)
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
 
@@ -56,4 +59,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(project(":domain"))
 }

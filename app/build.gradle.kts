@@ -50,6 +50,8 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    implementation(libs.mytracker)
+
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.androidx.hilt.compiler)
 
@@ -74,4 +76,5 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(project(":uikitMatule"))
     implementation(project(":data"))
+    implementation(project(":domain"))
 }

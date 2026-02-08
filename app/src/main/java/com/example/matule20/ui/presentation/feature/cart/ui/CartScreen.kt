@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.card.Card

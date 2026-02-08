@@ -1,7 +1,7 @@
 package com.example.data.feature.cart.datasource
 
-import com.example.data.feature.cart.request.RequestCart
-import com.example.data.feature.cart.response.ResponseCart
+import com.example.data.feature.cart.dto.request.RequestCart
+import com.example.data.feature.cart.dto.response.ResponseCart
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
 import retrofit2.http.PATCH

@@ -2,7 +2,7 @@ package com.example.data.network.config
 
 object NetworkConfig {
 
-    const val MATULE_BASE_URL = "https://api.matule.ru/api"
+    const val MATULE_BASE_URL = "http://103.90.75.40:8787/"
 
     object Routes{
 
