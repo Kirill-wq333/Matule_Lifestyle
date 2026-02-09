@@ -4,6 +4,7 @@ import com.example.data.feature.cart.dto.request.RequestCart
 import com.example.data.feature.cart.dto.response.ResponseCart
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
+import retrofit2.http.Body
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -24,7 +25,7 @@ interface CartApiService {
      */
     @WithAuthorization
     @POST(NetworkConfig.Routes.CART)
-    suspend fun postCart(request: RequestCart): ResponseCart
+    suspend fun postCart(@Body request: RequestCart): ResponseCart
 
     /**
      *
@@ -36,6 +37,6 @@ interface CartApiService {
      */
     @WithAuthorization
     @PATCH("${NetworkConfig.Routes.CART}/{id_bucket}")
-    suspend fun patchCart(@Path("id_bucket") idBucket: Int, request: RequestCart): ResponseCart
+    suspend fun patchCart(@Path("id_bucket") idBucket: Int,@Body request: RequestCart): ResponseCart
 
 }

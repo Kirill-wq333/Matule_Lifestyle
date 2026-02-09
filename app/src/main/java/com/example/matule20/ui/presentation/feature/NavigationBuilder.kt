@@ -2,16 +2,19 @@ package com.example.matule20.ui.presentation.feature
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matule20.ui.presentation.feature.auth.ui.AuthScreen
+import com.example.matule20.ui.presentation.feature.auth.viewmodel.AuthViewModel
 import com.example.matule20.ui.presentation.feature.cart.ui.CartScreen
 import com.example.matule20.ui.presentation.feature.catalog.ui.CatalogScreen
 import com.example.matule20.ui.presentation.feature.createPassword.ui.CreatePasswordScreen
 import com.example.matule20.ui.presentation.feature.createPassword.ui.CreateSecureCodeScreen
 import com.example.matule20.ui.presentation.feature.main.ui.MainScreen
+import com.example.matule20.ui.presentation.feature.main.viewmodel.MainViewModel
 import com.example.matule20.ui.presentation.feature.profile.ui.ProfileScreen
 import com.example.matule20.ui.presentation.feature.projects.ui.CreateProjectScreen
 import com.example.matule20.ui.presentation.feature.projects.ui.ProjectsScreen
@@ -34,7 +37,9 @@ fun NavigationBuilder(
             )
         }
         composable(AppRoutes.AUTH){
+            val vmAuth = hiltViewModel<AuthViewModel>()
             AuthScreen(
+                vm = vmAuth,
                 navController = navController
             )
         }
@@ -49,7 +54,8 @@ fun NavigationBuilder(
             )
         }
         composable(AppRoutes.MAIN){
-            MainScreen()
+            val vmMain = hiltViewModel<MainViewModel>()
+            MainScreen(vmMain)
         }
         composable(AppRoutes.CREATE_PROJECT){
             CreateProjectScreen(

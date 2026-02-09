@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,11 +29,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.matule20.ui.presentation.approutes.AppRoutes
+import com.example.matule20.ui.presentation.feature.auth.viewmodel.AuthUiState
 import com.example.matule20.ui.presentation.feature.auth.viewmodel.AuthViewModel
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
@@ -60,13 +61,28 @@ private fun Content(
     vm: AuthViewModel,
     navController: NavHostController
 ) {
-
+    val authState by vm.authState.collectAsStateWithLifecycle()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var emailError by remember { mutableStateOf("") }
     var passwordError by remember { mutableStateOf("") }
 
     var isSubmitted by remember { mutableStateOf(false) }
+
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthUiState.Success -> {
+                navController.navigate(AppRoutes.PROFILE) {
+                    popUpTo(AppRoutes.AUTH) { inclusive = true }
+                }
+            }
+            is AuthUiState.Error -> {
+                val errorState = authState as AuthUiState.Error
+                passwordError = errorState.message
+            }
+            else -> Unit
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -116,7 +132,6 @@ private fun Content(
 
                 if(emailError.isEmpty() && passwordError.isEmpty()){
                     vm.auth(email, password)
-                    navController.navigate(AppRoutes.PROFILE)
                 }
             },
             openRegisterScreen = {

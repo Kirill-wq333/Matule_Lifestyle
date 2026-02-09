@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,38 +34,40 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.domain.ui.feature.news.model.News
+import com.example.domain.ui.feature.product.model.Products
+import com.example.matule20.ui.presentation.feature.main.viewmodel.MainViewModel
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.ChipsButton
 import com.example.matulelibrary.shared.card.Card
 import com.example.matulelibrary.shared.input.SearchTextField
 import com.example.matulelibrary.typography.MatuleTypography
 
-@Preview
 @Composable
-private fun MainPrev() {
-    MainScreen()
+fun MainScreen(
+    vm: MainViewModel
+) {
+    val products by vm.products.collectAsState()
+    val news by vm.news.collectAsState()
+
+    Content(
+        products = products,
+        news = news
+    )
 }
 
-@Composable
-fun MainScreen() {
-    Content()
-}
-
 
 @Composable
-fun Content() {
+fun Content(
+    products: List<Products>,
+    news: List<News>
+) {
     var search by remember { mutableStateOf("") }
-    val promotionsAndNews = listOf(
-        "https://www.click-boutique.ru/upload/iblock/1fb/aPPS%C2%A0—%20копия.jpg",
-        "https://cloudparser.ru/files/6b4/6b4dd414acfb40cd7b71b482a920ead3.jpg"
-    )
-    val catalog = listOf(
-        "Все", "Мужчинам", "Женщинам"
-    )
-    val productsName = listOf(
-        "Рубашка Воскресенье для машинного вязания",
-        "Рубашка Воскресенье для машинного вязания"
-    )
+    val catalog = remember(products) {
+        listOf("Все") + products.map { it.type }.toSet().toList().sorted()
+    }
+    var selectedCategory by remember { mutableStateOf(-1) }
+    val pagerState = rememberPagerState( pageCount = { catalog.size })
 
     Column(
         modifier = Modifier
@@ -79,15 +85,31 @@ fun Content() {
         )
         Spacer(modifier = Modifier.height(32.dp))
         PromotionsAndNews(
-            promotionsAndNews = promotionsAndNews
+            promotionsAndNews = news.map { it.newsImage }
         )
         Spacer(modifier = Modifier.height(32.dp))
         CatalogDescription(
-            catalog = catalog
+            catalog = catalog,
+            isSelected = selectedCategory,
+            onCatalogSelected = {
+                selectedCategory == it
+            }
         )
-        MainProduct(
-            nameProduct = productsName
-        )
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
+            val productsPager = if (page == 0){
+                products
+            } else {
+                val subCategory = catalog.getOrNull(page) ?: ""
+                products.filter { it.type == subCategory }
+            }
+
+            MainProduct(
+                nameProduct = productsPager
+            )
+        }
     }
 }
 
@@ -143,7 +165,9 @@ fun PromotionsAndNewsItem(
 
 @Composable
 fun CatalogDescription(
-    catalog: List<String>
+    catalog: List<String>,
+    onCatalogSelected: (Int) -> Unit,
+    isSelected: Int
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -163,10 +187,14 @@ fun CatalogDescription(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(catalog){ item ->
+            itemsIndexed(catalog){ index, item ->
+                val isSelected = isSelected == index
                 ChipsButton(
                     textBtn = item,
-                    onClick = {}
+                    isSelectedColor = isSelected,
+                    onClick = {
+                        onCatalogSelected(index)
+                    }
                 )
             }
         }
@@ -175,7 +203,7 @@ fun CatalogDescription(
 
 @Composable
 fun MainProduct(
-    nameProduct: List<String>
+    nameProduct: List<Products>
 ) {
     LazyColumn(
         modifier = Modifier
@@ -185,7 +213,9 @@ fun MainProduct(
     ) {
         items(nameProduct) { item ->
             Card(
-                nameProduct = item,
+                nameProduct = item.title,
+                money = item.price,
+                genre = item.typeCloses,
                 visibleCard = true
             )
         }

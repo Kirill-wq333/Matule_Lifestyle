@@ -6,6 +6,7 @@ import com.example.data.feature.auth.dto.response.ResponseAuth
 import com.example.data.feature.auth.dto.response.ResponseRegister
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -24,7 +25,7 @@ interface AuthApiService {
      * @return Ответ с данными зарегистрированного пользователя
      */
     @POST(NetworkConfig.Routes.RECORDS)
-    suspend fun postRegister(request: RequestRegister): ResponseRegister
+    suspend fun postRegister(@Body request: RequestRegister): ResponseRegister
 
     /**
      *
@@ -34,7 +35,7 @@ interface AuthApiService {
      * @return Ответ с токеном и данными пользователя
      */
     @POST(NetworkConfig.Routes.AUTH)
-    suspend fun postAuth(request: RequestAuth): ResponseAuth
+    suspend fun postAuth(@Body request: RequestAuth): ResponseAuth
 
     /**
      *

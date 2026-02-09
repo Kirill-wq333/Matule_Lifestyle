@@ -5,6 +5,7 @@ import com.example.data.feature.project.dto.request.RequestProject
 import com.example.data.feature.project.dto.response.ResponseProject
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -23,7 +24,7 @@ interface ProjectApiService {
      */
     @WithAuthorization
     @POST(NetworkConfig.Routes.PROJECT)
-    suspend fun postProject(request: RequestProject): ProjectDto
+    suspend fun postProject(@Body request: RequestProject): ProjectDto
 
     /**
      *

@@ -4,6 +4,7 @@ import com.example.data.feature.profile.dto.UserDto
 import com.example.data.feature.profile.dto.request.RequestUser
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.Path
@@ -35,6 +36,6 @@ interface ProfileApiService {
      */
     @WithAuthorization
     @PATCH("${NetworkConfig.Routes.RECORDS}/{id_user}")
-    suspend fun patchUser(@Path("id_user")id: Int, request: RequestUser): UserDto
+    suspend fun patchUser(@Path("id_user")id: Int,@Body request: RequestUser): UserDto
 
 }
