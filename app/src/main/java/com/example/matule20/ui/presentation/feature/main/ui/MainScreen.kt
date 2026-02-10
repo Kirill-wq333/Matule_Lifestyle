@@ -16,10 +16,12 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,11 +65,15 @@ fun Content(
 ) {
     var search by remember { mutableStateOf("") }
     val catalog = remember(products) {
-        listOf("Все") + products.map { it.type }.toSet().toList().sorted()
+        listOf("Все") + products.map { it.typeCloses }.toSet().toList().sorted()
     }
-    var selectedCategory by remember { mutableStateOf(-1) }
+    var selectedCategory by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState( pageCount = { catalog.size })
-
+    LaunchedEffect(selectedCategory) {
+        if (selectedCategory != pagerState.currentPage) {
+            pagerState.animateScrollToPage(selectedCategory)
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -89,9 +95,9 @@ fun Content(
         Spacer(modifier = Modifier.height(32.dp))
         CatalogDescription(
             catalog = catalog,
-            isSelected = selectedCategory,
+            pagerState = pagerState,
             onCatalogSelected = {
-                selectedCategory == it
+                selectedCategory = it
             }
         )
         HorizontalPager(
@@ -102,7 +108,7 @@ fun Content(
                 products
             } else {
                 val subCategory = catalog.getOrNull(page) ?: ""
-                products.filter { it.type == subCategory }
+                products.filter { it.typeCloses == subCategory }
             }
 
             MainProduct(
@@ -166,7 +172,7 @@ fun PromotionsAndNewsItem(
 fun CatalogDescription(
     catalog: List<String>,
     onCatalogSelected: (Int) -> Unit,
-    isSelected: Int
+    pagerState: PagerState
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -187,7 +193,7 @@ fun CatalogDescription(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             itemsIndexed(catalog){ index, item ->
-                val isSelected = isSelected == index
+                val isSelected = pagerState.currentPage == index
                 ChipsButton(
                     textBtn = item,
                     isSelectedColor = isSelected,
