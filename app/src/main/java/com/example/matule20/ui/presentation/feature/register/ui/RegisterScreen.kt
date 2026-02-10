@@ -21,22 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.matule20.ui.presentation.approutes.AppRoutes
+import com.example.matule20.ui.presentation.feature.auth.ui.validateEmail
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.input.MatuleTextField
 import com.example.matulelibrary.shared.selection.Selection
 import com.example.matulelibrary.typography.MatuleTypography
-
-@Preview
-@Composable
-private fun RegisterPrev() {
-    RegisterScreen(navController = rememberNavController())
-}
 
 @Composable
 fun RegisterScreen(
@@ -49,7 +42,6 @@ fun RegisterScreen(
 private fun Content(
     navController: NavHostController
 ) {
-
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var patronymic by remember { mutableStateOf("") }
@@ -57,6 +49,7 @@ private fun Content(
     var mail by remember { mutableStateOf("") }
 
     var isSubmitted by remember { mutableStateOf(false) }
+    var emailError by remember { mutableStateOf("") }
     val activeBtn = firstName.isNotEmpty() && lastName.isNotEmpty() && patronymic.isNotEmpty() && mail.isNotEmpty() && dateBirthday.isNotEmpty()
     val unActiveBtn = firstName.isEmpty() || lastName.isEmpty() || patronymic.isEmpty() || mail.isEmpty() || dateBirthday.isEmpty()
 
@@ -84,8 +77,12 @@ private fun Content(
                 onLastNameChange = { lastName = it },
                 onPatronymicChange = { patronymic = it },
                 onDateBirthdayChange = { dateBirthday = it },
-                onMailChange = { mail = it },
-                isSubmitted = isSubmitted
+                onMailChange = {
+                    mail = it
+                    emailError = ""
+                },
+                isSubmitted = isSubmitted,
+                emailError = emailError
             )
         }
 
@@ -96,7 +93,19 @@ private fun Content(
             enable = activeBtn,
             onClick = {
                 isSubmitted = true
-                navController.navigate(AppRoutes.CREATE_NEW_PASSWORD)
+
+                emailError = if (mail.isEmpty()) {
+                    "Введите email"
+                } else if (!validateEmail(mail)) {
+                    "Формат: name@domain.ru только маленькие буквы и цифры"
+                } else {
+                    ""
+                }
+                if (emailError.isEmpty()){
+                    navController.navigate(AppRoutes.createPasswordRoute(mail)){
+                        popUpTo(AppRoutes.REGISTER){ inclusive = true }
+                    }
+                }
             }
         )
     }
@@ -109,6 +118,7 @@ private fun RegisterContent(
     patronymic: String,
     dateBirthday: String,
     mail: String,
+    emailError: String,
     isSubmitted: Boolean,
     gender: String,
     onFirstNameChange: (String) -> Unit,
@@ -157,8 +167,8 @@ private fun RegisterContent(
         )
         MatuleTextField(
             text = mail,
-            errorText = "Это поле обязательно!",
-            isError = mail.isEmpty() && isSubmitted,
+            errorText = emailError,
+            isError = emailError.isNotEmpty(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeholder = "Почта",
             onTextChange = onMailChange

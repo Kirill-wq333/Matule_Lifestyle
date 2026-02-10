@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,40 +18,61 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matule20.ui.presentation.feature.auth.ui.TitleAndSubTitleWithImage
 import com.example.matule20.ui.presentation.feature.auth.ui.validatePassword
+import com.example.matule20.ui.presentation.feature.register.viewmodel.RegisterUiState
+import com.example.matule20.ui.presentation.feature.register.viewmodel.RegisterViewModel
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.input.PasswordTextField
 
-@Preview
-@Composable
-private fun CreatePasswordPrev() {
-    CreatePasswordScreen(rememberNavController())
-}
-
 
 @Composable
-fun CreatePasswordScreen(navController: NavHostController) {
-    Content(navController = navController)
+fun CreatePasswordScreen(
+    vm: RegisterViewModel,
+    navController: NavHostController
+) {
+    Content(
+        vm = vm,
+        navController = navController
+    )
 }
 
 @Composable
 private fun Content(
+    vm: RegisterViewModel,
     navController: NavHostController
 ) {
+    val email = remember {
+        navController.currentBackStackEntry?.arguments?.getString("email") ?:
+        navController.previousBackStackEntry?.arguments?.getString("email") ?: ""
+    }
 
+    val uiState by vm.registerUiState.collectAsStateWithLifecycle()
     var password by remember { mutableStateOf("") }
     var passwordError by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
     var repeatPasswordError by remember { mutableStateOf("") }
     var isSubmit by remember { mutableStateOf(false) }
 
+    LaunchedEffect(uiState) {
+        when(uiState){
+            is RegisterUiState.Success -> {
+                navController.navigate(AppRoutes.CREATE_SECURE_CODE_PASSWORD){
+                    popUpTo(AppRoutes.CREATE_NEW_PASSWORD){ inclusive = true }
+                }
+            }
+            is RegisterUiState.Error -> {
+                val error = uiState as RegisterUiState.Error
+               repeatPasswordError = error.message
+            }
+            else -> Unit
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -87,7 +109,7 @@ private fun Content(
                     ) ?: ""
                 }
                 if (passwordError.isEmpty() && repeatPasswordError.isEmpty()){
-                    navController.navigate(AppRoutes.CREATE_SECURE_CODE_PASSWORD)
+                    vm.register(email,password,repeatPassword)
                 }
             },
             repeatPassword = repeatPassword,

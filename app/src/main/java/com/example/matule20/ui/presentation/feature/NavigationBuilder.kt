@@ -19,6 +19,7 @@ import com.example.matule20.ui.presentation.feature.profile.ui.ProfileScreen
 import com.example.matule20.ui.presentation.feature.projects.ui.CreateProjectScreen
 import com.example.matule20.ui.presentation.feature.projects.ui.ProjectsScreen
 import com.example.matule20.ui.presentation.feature.register.ui.RegisterScreen
+import com.example.matule20.ui.presentation.feature.register.viewmodel.RegisterViewModel
 import com.example.matule20.ui.presentation.feature.splash.ui.SplashScreen
 
 @Composable
@@ -63,7 +64,9 @@ fun NavigationBuilder(
             )
         }
         composable(AppRoutes.CREATE_NEW_PASSWORD){
+            val vmCreatePassword = hiltViewModel<RegisterViewModel>()
             CreatePasswordScreen(
+                vm = vmCreatePassword,
                 navController = navController
             )
         }
