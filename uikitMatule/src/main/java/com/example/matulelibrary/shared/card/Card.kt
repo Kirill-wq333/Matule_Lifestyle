@@ -50,6 +50,7 @@ fun Card(
     date: String = "",
     visibleDelete: Boolean = false,
     onDeleteCard: () -> Unit = {},
+    openProduct: () -> Unit = {},
     visibleCard: Boolean = false,
     visibleCart: Boolean = false,
 ) {
@@ -64,6 +65,7 @@ fun Card(
 
     Column(
         modifier = Modifier
+            .clickable(onClick = openProduct)
             .background(
                 color = Color.White,
                 shape = RoundedCornerShape(12.dp)

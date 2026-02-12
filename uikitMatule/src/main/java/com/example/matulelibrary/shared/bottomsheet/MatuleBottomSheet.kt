@@ -34,11 +34,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun MatuleBottomSheet(
     content: @Composable () -> Unit,
-    nameProduct: String
+    nameProduct: String,
+    onDismissRequest: () -> Unit = {}
 ) {
     MatuleModalBottomSheet(
         modifier = Modifier.fillMaxWidth(),
-        onDismissRequest = {}
+        onDismissRequest = onDismissRequest
     ) { hide ->
         Column(
             modifier = Modifier

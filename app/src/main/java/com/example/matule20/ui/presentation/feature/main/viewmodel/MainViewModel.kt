@@ -44,9 +44,3 @@ class MainViewModel @Inject constructor(
         }
     }
 }
-
-sealed interface MainUiState{
-    data object Idle: MainUiState
-    data object Success: MainUiState
-    data class Error(val message: String): MainUiState
-}

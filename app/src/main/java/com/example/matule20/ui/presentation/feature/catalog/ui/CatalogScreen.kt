@@ -49,18 +49,24 @@ import kotlin.collections.emptyList
 @Composable
 fun CatalogScreen(
     vm: CatalogViewModel,
+    openProduct: (String) -> Unit,
     navController: NavHostController
 ) {
    val products by vm.products.collectAsState()
+    LaunchedEffect(Unit) {
+        vm.content()
+    }
     Content(
         products = products,
-        navController = navController
+        navController = navController,
+        openProduct = openProduct
     )
 }
 
 @Composable
 fun Content(
     products: List<Products>,
+    openProduct: (String) -> Unit,
     navController: NavHostController
 ) {
     var search by remember { mutableStateOf("") }
@@ -79,6 +85,7 @@ fun Content(
             search = search,
             onSearchChange = { search = it },
             clearSearch = { search = "" },
+            openProduct = openProduct,
             openProfileScreen = { navController.navigate(AppRoutes.PROFILE) }
         )
         CartButton(
@@ -96,6 +103,7 @@ fun CatalogContent(
     catalog: List<String>,
     products: List<Products>,
     search: String,
+    openProduct: (String) -> Unit,
     openProfileScreen: () -> Unit,
     onSearchChange: (String) -> Unit,
     clearSearch: () -> Unit
@@ -108,7 +116,7 @@ fun CatalogContent(
                 products.title.contains(search, ignoreCase = true)
             }
         } else {
-            products
+            emptyList()
         }
     }
     LaunchedEffect(selectedCategory) {
@@ -147,7 +155,8 @@ fun CatalogContent(
             }
 
             MainProduct(
-                nameProduct = productsPager
+                nameProduct = productsPager,
+                openProduct = openProduct
             )
         }
     }

@@ -32,6 +32,6 @@ interface ProductApiService {
      */
     @WithAuthorization
     @GET("${NetworkConfig.Routes.PRODUCTS}/{id_product}")
-    suspend fun getProduct(@Path("id_product") idProduct: Int): ProductDto
+    suspend fun getProduct(@Path("id_product") idProduct: String): ProductDto
 
 }

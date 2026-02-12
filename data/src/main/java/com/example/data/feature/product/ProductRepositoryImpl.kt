@@ -10,7 +10,7 @@ import com.example.domain.ui.feature.product.repository.ProductRepository
 class ProductRepositoryImpl(
     private val apiService: ProductApiService
 ) : ProductRepository {
-    override suspend fun product(productId: Int): Result<Product> = runCatching {
+    override suspend fun product(productId: String): Result<Product> = runCatching {
         val response = apiService.getProduct(productId)
         Result.success(response.toProduct())
     }.fold(

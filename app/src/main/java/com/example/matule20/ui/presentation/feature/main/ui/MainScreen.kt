@@ -46,14 +46,19 @@ import com.example.matulelibrary.typography.MatuleTypography
 
 @Composable
 fun MainScreen(
-    vm: MainViewModel
+    vm: MainViewModel,
+    openProduct: (String) -> Unit
 ) {
     val products by vm.products.collectAsState()
     val news by vm.news.collectAsState()
 
+    LaunchedEffect(Unit) {
+        vm.content()
+    }
     Content(
         products = products,
-        news = news
+        news = news,
+        openProduct = openProduct
     )
 }
 
@@ -61,7 +66,8 @@ fun MainScreen(
 @Composable
 fun Content(
     products: List<Products>,
-    news: List<News>
+    news: List<News>,
+    openProduct: (String) -> Unit
 ) {
     var search by remember { mutableStateOf("") }
     val catalog = remember(products) {
@@ -75,7 +81,7 @@ fun Content(
                 products.title.contains(search, ignoreCase = true)
             }
         } else {
-            products
+            emptyList()
         }
     }
     LaunchedEffect(selectedCategory) {
@@ -121,7 +127,8 @@ fun Content(
             }
 
             MainProduct(
-                nameProduct = productsPager
+                nameProduct = productsPager,
+                openProduct = openProduct
             )
         }
     }
@@ -217,7 +224,8 @@ fun CatalogDescription(
 
 @Composable
 fun MainProduct(
-    nameProduct: List<Products>
+    nameProduct: List<Products>,
+    openProduct: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -228,6 +236,7 @@ fun MainProduct(
         items(nameProduct) { item ->
             Card(
                 nameProduct = item.title,
+                openProduct = { openProduct(item.id) },
                 money = item.price,
                 genre = item.typeCloses,
                 visibleCard = true

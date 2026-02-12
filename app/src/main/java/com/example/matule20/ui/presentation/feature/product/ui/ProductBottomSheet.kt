@@ -9,47 +9,34 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.matule20.ui.presentation.feature.product.viewmodel.ProductViewModel
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.bottomsheet.MatuleBottomSheet
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.typography.MatuleTypography
 
-@Preview
-@Composable
-private fun ProductPrev() {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        ProductBottomSheet(
-            description = "Мой выбор для этих шапок – кардные составы, которые раскрываются деликатным пушком. Кашемиры, мериносы, смесовки с ними отлично подойдут на шапку. Кардные составы берите в большое количество сложений, вязать будем резинку 1х1, плотненько. Пряжу 1400-1500м в 100г в 4 сложения, пряжу 700м в 2 сложения. Ориентир для конечной толщины – 300-350м в 100г. Артикулы, из которых мы вязали эту модель: Zermatt Zegna Baruffa, Cashfive, Baby Cashmere Loro Piana, Soft Donegal и другие. Примерный расход на шапку с подгибом 70-90г.",
-            price = 214,
-            nameProduct = "Рубашка воскресенье для машинного вязания",
-            approximateCost = "80-90 г"
-        )
-    }
-}
-
-
 @Composable
 fun ProductBottomSheet(
-    description: String,
-    price: Int,
-    nameProduct: String,
-    approximateCost: String
+    vm: ProductViewModel,
+    onDismissRequest: () -> Unit
 ) {
+    val product by vm.productById.collectAsState()
+
     MatuleBottomSheet(
-        nameProduct = nameProduct,
+        nameProduct = product.title,
+        onDismissRequest = onDismissRequest,
         content = {
             Column() {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -59,7 +46,7 @@ fun ProductBottomSheet(
                         style = MatuleTypography.headlineMedium16
                     )
                     Text(
-                        text = description,
+                        text = product.description,
                         color = Color.Black,
                         style = MatuleTypography.textRegular15
                     )
@@ -75,7 +62,7 @@ fun ProductBottomSheet(
                         style = MatuleTypography.captionRegular14
                     )
                     Text(
-                        text = approximateCost,
+                        text = product.approximateCost,
                         color = Color.Black,
                         style = MatuleTypography.headlineMedium16
                     )
@@ -83,7 +70,7 @@ fun ProductBottomSheet(
                 Spacer(modifier = Modifier.height(19.dp))
                 MatuleButton(
                     activeBtn = true,
-                    textBtn = stringResource(R.string.btn_added_for, price),
+                    textBtn = stringResource(R.string.btn_added_for, product.price),
                     onClick = {}
                 )
             }
