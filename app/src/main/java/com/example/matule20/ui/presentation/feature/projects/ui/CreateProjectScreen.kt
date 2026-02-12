@@ -1,6 +1,12 @@
 package com.example.matule20.ui.presentation.feature.projects.ui
 
+import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,41 +29,54 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.matule20.ui.presentation.approutes.AppRoutes
+import com.example.matule20.ui.presentation.feature.projects.viewmodel.ProjectViewModel
 import com.example.matulelibrary.R
 import com.example.matulelibrary.color.MatuleColors
+import com.example.matulelibrary.shared.bottomsheet.MatuleBottomSheet
+import com.example.matulelibrary.shared.bottomsheet.MatuleModalBottomSheet
 import com.example.matulelibrary.shared.button.MatuleButton
 import com.example.matulelibrary.shared.header.MatuleHeader
 import com.example.matulelibrary.shared.input.MatuleTextField
 import com.example.matulelibrary.shared.selection.Selection
 import com.example.matulelibrary.typography.MatuleTypography
-
-@Preview
-@Composable
-private fun CreateProjectScreenPrev() {
-    CreateProjectScreen(navController = rememberNavController())
-}
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
-fun CreateProjectScreen(navController: NavHostController) {
-    Content(navController = navController)
+fun CreateProjectScreen(
+    vm: ProjectViewModel,
+    navController: NavHostController
+) {
+    Content(
+        vm = vm,
+        navController = navController
+    )
 }
 
 @Composable
 private fun Content(
+    vm: ProjectViewModel,
     navController: NavHostController
 ) {
+    var showBottomSheet by remember { mutableStateOf(false) }
     var nameProject by remember { mutableStateOf("") }
     var dateEnd by remember { mutableStateOf("") }
     var dateStart by remember { mutableStateOf("") }
     var sourceDescription by remember { mutableStateOf("") }
-
+    var profileImage by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -80,7 +99,7 @@ private fun Content(
         Spacer(modifier = Modifier.height(16.dp))
         MatuleTextField(
             modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label =  true,
+            label = true,
             labelText = stringResource(R.string.name_project),
             text = nameProject,
             onTextChange = { nameProject = it }
@@ -88,7 +107,7 @@ private fun Content(
         Spacer(modifier = Modifier.height(16.dp))
         MatuleTextField(
             modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label =  true,
+            label = true,
             labelText = stringResource(R.string.start_date),
             text = dateStart,
             onTextChange = { dateStart = it }
@@ -96,7 +115,7 @@ private fun Content(
         Spacer(modifier = Modifier.height(22.dp))
         MatuleTextField(
             modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label =  true,
+            label = true,
             labelText = stringResource(R.string.end_date),
             text = dateEnd,
             onTextChange = { dateEnd = it }
@@ -109,8 +128,8 @@ private fun Content(
         Spacer(modifier = Modifier.height(16.dp))
         MatuleTextField(
             modifier = Modifier.padding(start = 23.dp, end = 17.dp),
-            label =  true,
-            labelText = stringResource(R.string.end_date),
+            label = true,
+            labelText = stringResource(R.string.descriptions_source),
             text = sourceDescription,
             onTextChange = { sourceDescription = it }
         )
@@ -120,13 +139,136 @@ private fun Content(
             label = stringResource(R.string.category)
         )
         Spacer(modifier = Modifier.height(37.dp))
-        PhotoProject()
+
+        PhotoProject(
+            image = profileImage,
+            onClick = { showBottomSheet = true }
+        )
         Spacer(modifier = Modifier.height(32.dp))
         MatuleButton(
             modifier = Modifier.padding(horizontal = 20.dp),
             textBtn = stringResource(R.string.btn_),
             activeBtn = true,
-            onClick = { navController.navigate(AppRoutes.PROJECTS)}
+            onClick = {
+                if (dateStart.isNotEmpty() &&
+                    dateEnd.isNotEmpty() &&
+                    sourceDescription.isNotEmpty() &&
+                    nameProject.isNotEmpty()
+                )
+                    vm.createProject(
+                        title = nameProject,
+                        typeProject = "",
+                        dateStart = dateStart,
+                        dateEnd = dateEnd,
+                        gender = "",
+                        descriptionSource = sourceDescription,
+                        category = "",
+                        image = profileImage.toString()
+                    )
+                    navController.navigate(AppRoutes.PROJECTS)
+            }
+        )
+
+        ModalBottomSheetCreateProject(
+            showBottomSheet = showBottomSheet,
+            onDismiss = { showBottomSheet = false },
+            onPhotoSelected = { imageUri ->
+                profileImage = imageUri
+            }
+        )
+    }
+}
+
+@Composable
+fun ModalBottomSheetCreateProject(
+    showBottomSheet: Boolean,
+    onDismiss: () -> Unit,
+    onPhotoSelected: (String) -> Unit
+) {
+    val context = LocalContext.current
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let {
+            onPhotoSelected(it.toString())
+        }
+        onDismiss()
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            val savedUri = getTempUri(context)
+            savedUri?.let {
+                onPhotoSelected(it.toString())
+            }
+        }
+        onDismiss()
+    }
+    fun createTempImageUri(): Uri {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val fileName = "JPEG_${timeStamp}.jpg"
+        val file = File(context.cacheDir, fileName)
+        return FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            file
+        )
+    }
+    var tempUri by remember { mutableStateOf<Uri?>(null) }
+    if (showBottomSheet) {
+        MatuleBottomSheet(
+            nameProduct = "Добавить фото",
+            content = {
+                Spacer(modifier = Modifier.height(40.dp))
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(40.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Выбрать из галереи",
+                        color = Color.Black,
+                        style = MatuleTypography.titleSemiBold17,
+                        modifier = Modifier
+                            .clickable(
+                                onClick = {
+                                    galleryLauncher.launch("image/*")
+                                }
+                            )
+                    )
+                    Text(
+                        text = "Сделать фото",
+                        color = Color.Black,
+                        style = MatuleTypography.titleSemiBold17,
+                        modifier = Modifier
+                            .clickable(
+                                onClick = {
+                                    tempUri = createTempImageUri()
+                                    tempUri?.let { uri ->
+                                        cameraLauncher.launch(uri)
+                                    }
+                                }
+                            )
+                    )
+                }
+            }
+        )
+    }
+
+}
+
+fun getTempUri(context: Context): Uri? {
+    val cacheDir = context.cacheDir
+    val files = cacheDir.listFiles { file -> file.name.startsWith("JPEG_") }
+    val latestFile = files?.maxByOrNull { it.lastModified() }
+    return latestFile?.let {
+        FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            it
         )
     }
 }
@@ -154,24 +296,35 @@ fun LabelAndSelection(
 }
 
 @Composable
-fun PhotoProject() {
+fun PhotoProject(
+    image: String?,
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
+            .clickable(onClick = onClick)
             .background(
                 color = MatuleColors.inputBg,
                 shape = RoundedCornerShape(10.dp)
             )
     ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_added_photo),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(
-                    top = 56.dp,
-                    start = 62.dp,
-                    end = 60.dp,
-                    bottom = 56.dp
-                )
-        )
+        if (image != null){
+            AsyncImage(
+                model = image,
+                contentDescription = null
+            )
+        } else {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.ic_added_photo),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(
+                        top = 56.dp,
+                        start = 62.dp,
+                        end = 60.dp,
+                        bottom = 56.dp
+                    )
+            )
+        }
     }
 }

@@ -15,8 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,33 +34,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.domain.ui.feature.product.model.Products
 import com.example.matule20.ui.presentation.approutes.AppRoutes
+import com.example.matule20.ui.presentation.feature.catalog.viewmodel.CatalogViewModel
+import com.example.matule20.ui.presentation.feature.main.ui.CatalogDescription
+import com.example.matule20.ui.presentation.feature.main.ui.MainProduct
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.CartButton
 import com.example.matulelibrary.shared.button.ChipsButton
 import com.example.matulelibrary.shared.card.Card
 import com.example.matulelibrary.shared.input.SearchTextField
+import kotlin.collections.emptyList
 
-@Preview
 @Composable
-private fun CatalogScreenPrev() {
-    CatalogScreen(navController = rememberNavController())
-}
-@Composable
-fun CatalogScreen(navController: NavHostController) {
+fun CatalogScreen(
+    vm: CatalogViewModel,
+    navController: NavHostController
+) {
+   val products by vm.products.collectAsState()
     Content(
+        products = products,
         navController = navController
     )
 }
 
 @Composable
 fun Content(
+    products: List<Products>,
     navController: NavHostController
 ) {
     var search by remember { mutableStateOf("") }
-    val genres = listOf(
-        "Все", "Мужчинам", "Женщинам"
-    )
+    val catalog = remember(products) {
+        listOf("Все") + products.map { it.typeCloses }.toSet().toList().sorted()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +74,8 @@ fun Content(
             .padding(top = 28.dp, bottom = 32.dp)
     ) {
         CatalogContent(
-            genres = genres,
+            catalog = catalog,
+            products = products,
             search = search,
             onSearchChange = { search = it },
             clearSearch = { search = "" },
@@ -82,12 +93,30 @@ fun Content(
 
 @Composable
 fun CatalogContent(
-    genres: List<String>,
+    catalog: List<String>,
+    products: List<Products>,
     search: String,
     openProfileScreen: () -> Unit,
     onSearchChange: (String) -> Unit,
     clearSearch: () -> Unit
 ) {
+    var selectedCategory by remember { mutableStateOf(0) }
+    val pagerState = rememberPagerState( pageCount = { catalog.size })
+    val searchResults = remember(search, products) {
+        if (search.isNotEmpty()){
+            products.filter { products ->
+                products.title.contains(search, ignoreCase = true)
+            }
+        } else {
+            products
+        }
+    }
+    LaunchedEffect(selectedCategory) {
+        if (selectedCategory != pagerState.currentPage) {
+            pagerState.animateScrollToPage(selectedCategory)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -99,32 +128,27 @@ fun CatalogContent(
             openProfileScreen = openProfileScreen
         )
         Spacer(modifier = Modifier.height(32.dp))
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items(genres){
-                ChipsButton(
-                    textBtn = it,
-                    onClick = {}
-                )
+        CatalogDescription(
+            catalog = catalog,
+            pagerState = pagerState,
+            onCatalogSelected = {
+                selectedCategory = it
             }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(4){
-                Card(
-                    nameProduct = "Рубашка Воскресенье для машинного ",
-                    visibleCard = true
-                )
+        )
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
+            val productsPager = if (page == 0){
+                searchResults
+            } else {
+                val subCategory = catalog.getOrNull(page) ?: ""
+                searchResults.filter { it.typeCloses == subCategory }
             }
+
+            MainProduct(
+                nameProduct = productsPager
+            )
         }
     }
 }

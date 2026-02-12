@@ -17,8 +17,8 @@ class ProfileModule {
 
     @Provides
     @Singleton
-    fun provideProfileApiService(retrofit: Retrofit): ProjectApiService =
-        retrofit.create(ProjectApiService::class.java)
+    fun provideProfileApiService(retrofit: Retrofit): ProfileApiService =
+        retrofit.create(ProfileApiService::class.java)
 
     @Provides
     @Singleton

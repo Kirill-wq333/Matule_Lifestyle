@@ -69,6 +69,15 @@ fun Content(
     }
     var selectedCategory by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState( pageCount = { catalog.size })
+    val searchResults = remember(search, products) {
+        if (search.isNotEmpty()){
+            products.filter { products ->
+                products.title.contains(search, ignoreCase = true)
+            }
+        } else {
+            products
+        }
+    }
     LaunchedEffect(selectedCategory) {
         if (selectedCategory != pagerState.currentPage) {
             pagerState.animateScrollToPage(selectedCategory)
@@ -105,10 +114,10 @@ fun Content(
             modifier = Modifier.fillMaxSize()
         ) { page ->
             val productsPager = if (page == 0){
-                products
+                searchResults
             } else {
                 val subCategory = catalog.getOrNull(page) ?: ""
-                products.filter { it.typeCloses == subCategory }
+                searchResults.filter { it.typeCloses == subCategory }
             }
 
             MainProduct(
