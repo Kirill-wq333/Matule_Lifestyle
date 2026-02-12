@@ -202,6 +202,7 @@ fun MatuleTextField(
                 visualTransformation = visualTransformation,
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
                     focusedContainerColor = MatuleColors.inputBg,
                     focusedPlaceholderColor = Color(0xFF939396),
                     focusedIndicatorColor = Color.Transparent,

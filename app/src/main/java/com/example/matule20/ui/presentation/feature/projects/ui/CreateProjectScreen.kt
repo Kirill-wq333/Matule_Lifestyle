@@ -73,8 +73,11 @@ private fun Content(
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     var nameProject by remember { mutableStateOf("") }
+    var type by remember { mutableStateOf("") }
     var dateEnd by remember { mutableStateOf("") }
     var dateStart by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("") }
     var sourceDescription by remember { mutableStateOf("") }
     var profileImage by remember { mutableStateOf<String?>(null) }
 
@@ -94,7 +97,8 @@ private fun Content(
         Spacer(modifier = Modifier.height(13.dp))
         LabelAndSelection(
             modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label = stringResource(R.string.type)
+            label = stringResource(R.string.type),
+            selection = type
         )
         Spacer(modifier = Modifier.height(16.dp))
         MatuleTextField(
@@ -123,7 +127,8 @@ private fun Content(
         Spacer(modifier = Modifier.height(10.dp))
         LabelAndSelection(
             modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label = stringResource(R.string.whom)
+            label = stringResource(R.string.whom),
+            selection = gender
         )
         Spacer(modifier = Modifier.height(16.dp))
         MatuleTextField(
@@ -136,7 +141,8 @@ private fun Content(
         Spacer(modifier = Modifier.height(17.dp))
         LabelAndSelection(
             modifier = Modifier.padding(start = 21.dp, end = 19.dp),
-            label = stringResource(R.string.category)
+            label = stringResource(R.string.category),
+            selection = category
         )
         Spacer(modifier = Modifier.height(37.dp))
 
@@ -157,12 +163,12 @@ private fun Content(
                 )
                     vm.createProject(
                         title = nameProject,
-                        typeProject = "",
+                        typeProject = type,
                         dateStart = dateStart,
                         dateEnd = dateEnd,
-                        gender = "",
+                        gender = gender,
                         descriptionSource = sourceDescription,
-                        category = "",
+                        category = category,
                         image = profileImage.toString()
                     )
                     navController.navigate(AppRoutes.PROJECTS)
@@ -276,7 +282,8 @@ fun getTempUri(context: Context): Uri? {
 @Composable
 fun LabelAndSelection(
     modifier: Modifier = Modifier,
-    label: String
+    label: String,
+    selection: String
 ) {
     Column(
         modifier = modifier
@@ -290,7 +297,7 @@ fun LabelAndSelection(
             style = MatuleTypography.captionRegular14
         )
         Selection(
-            selectionName = "прваолпрвло",
+            selectionName = selection,
         )
     }
 }
@@ -311,7 +318,9 @@ fun PhotoProject(
         if (image != null){
             AsyncImage(
                 model = image,
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth(0.6f)
             )
         } else {
             Icon(
