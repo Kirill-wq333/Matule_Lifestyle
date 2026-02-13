@@ -2,6 +2,7 @@ package com.example.matule20.ui.presentation.feature.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.storage.token.TokenProvider
 import com.example.domain.ui.feature.auth.interactor.AuthInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authInteractor: AuthInteractor
+    private val authInteractor: AuthInteractor,
+    private val tokenProvider: TokenProvider
 ): ViewModel() {
 
     private val _authState = MutableStateFlow<AuthUiState>(AuthUiState.Idle)
@@ -24,6 +26,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
            authInteractor.auth(identity, password)
                 .onSuccess {
+                    tokenProvider.saveToken(it.token)
                     _authState.value = AuthUiState.Success
                 }
                 .onFailure { error ->

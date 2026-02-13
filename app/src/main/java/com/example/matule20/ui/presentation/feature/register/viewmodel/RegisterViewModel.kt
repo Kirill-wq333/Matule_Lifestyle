@@ -2,6 +2,7 @@ package com.example.matule20.ui.presentation.feature.register.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.storage.token.TokenProvider
 import com.example.domain.ui.feature.auth.interactor.AuthInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

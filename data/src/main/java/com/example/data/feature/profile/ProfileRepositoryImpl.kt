@@ -9,7 +9,7 @@ import com.example.domain.ui.feature.profile.repository.ProfileRepository
 class ProfileRepositoryImpl(
     private val apiService: ProfileApiService
 ) : ProfileRepository {
-    override suspend fun user(userId: Int): Result<User> = runCatching {
+    override suspend fun user(userId: String): Result<User> = runCatching {
         val response = apiService.getUser(userId)
         Result.success(response.toUser())
     }.fold(
@@ -18,7 +18,7 @@ class ProfileRepositoryImpl(
     )
 
     override suspend fun patchUser(
-        userId: Int,
+        userId: String,
         email: String,
         emailVisibility: Boolean,
         firstname: String,

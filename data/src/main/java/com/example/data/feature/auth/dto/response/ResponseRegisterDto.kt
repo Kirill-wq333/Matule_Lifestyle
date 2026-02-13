@@ -1,4 +1,7 @@
 package com.example.data.feature.auth.dto.response
+
+import com.example.domain.ui.feature.auth.model.response.ResponseRegister
+
 /**
  * Ответ на успешную регистрацию пользователя.
  *
@@ -15,7 +18,7 @@ package com.example.data.feature.auth.dto.response
  * @property datebirthday Дата рождения пользователя
  * @property gender Пол пользователя
  */
-data class ResponseRegister(
+data class ResponseRegisterDto(
     val collectionId: String,
     val collectionName: String,
     val created: String,
@@ -28,4 +31,22 @@ data class ResponseRegister(
     val verified: String,
     val datebirthday: String,
     val gender: String
-)
+){
+    companion object{
+        fun ResponseRegisterDto.toResponseRegister(): ResponseRegister =
+            ResponseRegister(
+                collectionId = collectionId,
+                collectionName = collectionName,
+                created = created,
+                emailVisibility = emailVisibility,
+                firstname = firstname,
+                id = id,
+                lastname = lastname,
+                secondname = secondname,
+                updated = updated,
+                verified = verified,
+                datebirthday = datebirthday,
+                gender = gender
+            )
+    }
+}

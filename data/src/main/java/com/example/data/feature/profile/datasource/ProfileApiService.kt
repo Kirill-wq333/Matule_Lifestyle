@@ -24,7 +24,7 @@ interface ProfileApiService {
      */
     @WithAuthorization
     @GET("${NetworkConfig.Routes.RECORDS}/{id_user}")
-    suspend fun getUser(@Path("id_user")id: Int): UserDto
+    suspend fun getUser(@Path("id_user")id: String): UserDto
 
     /**
      *
@@ -36,6 +36,6 @@ interface ProfileApiService {
      */
     @WithAuthorization
     @PATCH("${NetworkConfig.Routes.RECORDS}/{id_user}")
-    suspend fun patchUser(@Path("id_user")id: Int,@Body request: RequestUser): UserDto
+    suspend fun patchUser(@Path("id_user")id: String,@Body request: RequestUser): UserDto
 
 }

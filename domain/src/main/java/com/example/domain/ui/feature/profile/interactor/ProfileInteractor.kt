@@ -6,12 +6,12 @@ import com.example.domain.ui.feature.profile.repository.ProfileRepository
 class ProfileInteractor(
     private val profileRepository: ProfileRepository
 ) {
-    suspend fun user(userId: Int): Result<User>{
+    suspend fun user(userId: String): Result<User>{
         return profileRepository.user(userId)
     }
 
     suspend fun patchUser(
-        userId: Int,
+        userId: String,
         email: String,
         emailVisibility: Boolean,
         firstname: String,

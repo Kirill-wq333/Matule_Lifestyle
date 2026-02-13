@@ -9,7 +9,7 @@ class CartInteractor(
         return  cartRepository.postCart(userId, productId, count)
     }
 
-    suspend fun patchCart(idBBucket: Int, userId: String, productId: String, count: Int): Result<Unit>{
+    suspend fun patchCart(idBBucket: String, userId: String, productId: String, count: Int): Result<Unit>{
         return cartRepository.patchCart(idBBucket, userId, productId, count)
     }
 }

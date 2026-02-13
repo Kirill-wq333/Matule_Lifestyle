@@ -13,7 +13,7 @@ class CartRepositoryImpl(
     }
 
     override suspend fun patchCart(
-        idBBucket: Int,
+        idBBucket: String,
         userId: String,
         productId: String,
         count: Int

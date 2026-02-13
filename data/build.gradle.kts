@@ -42,6 +42,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.firebase.firestore.ktx)
+    implementation (libs.logging.interceptor)
+    implementation(libs.androidx.datastore.preferences)
     kapt (libs.androidx.hilt.compiler)
 
     implementation(libs.retrofit)

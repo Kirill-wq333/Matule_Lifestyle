@@ -2,8 +2,8 @@ package com.example.data.feature.auth.datasource
 
 import com.example.data.feature.auth.dto.request.RequestAuth
 import com.example.data.feature.auth.dto.request.RequestRegister
-import com.example.data.feature.auth.dto.response.ResponseAuth
-import com.example.data.feature.auth.dto.response.ResponseRegister
+import com.example.data.feature.auth.dto.response.ResponseAuthDto
+import com.example.data.feature.auth.dto.response.ResponseRegisterDto
 import com.example.data.network.annotation.WithAuthorization
 import com.example.data.network.config.NetworkConfig
 import retrofit2.http.Body
@@ -25,7 +25,7 @@ interface AuthApiService {
      * @return Ответ с данными зарегистрированного пользователя
      */
     @POST(NetworkConfig.Routes.RECORDS)
-    suspend fun postRegister(@Body request: RequestRegister): ResponseRegister
+    suspend fun postRegister(@Body request: RequestRegister): ResponseRegisterDto
 
     /**
      *
@@ -35,7 +35,7 @@ interface AuthApiService {
      * @return Ответ с токеном и данными пользователя
      */
     @POST(NetworkConfig.Routes.AUTH)
-    suspend fun postAuth(@Body request: RequestAuth): ResponseAuth
+    suspend fun postAuth(@Body request: RequestAuth): ResponseAuthDto
 
     /**
      *
@@ -45,6 +45,6 @@ interface AuthApiService {
      */
     @WithAuthorization
     @DELETE("${NetworkConfig.Routes.AUTH_ORIGINS}/{id_token}")
-    suspend fun exitSystem(@Path("id_token") idToken: Int)
+    suspend fun exitSystem(@Path("id_token") idToken: String)
 
 }

@@ -37,6 +37,6 @@ interface CartApiService {
      */
     @WithAuthorization
     @PATCH("${NetworkConfig.Routes.CART}/{id_bucket}")
-    suspend fun patchCart(@Path("id_bucket") idBucket: Int,@Body request: RequestCart): ResponseCart
+    suspend fun patchCart(@Path("id_bucket") idBucket: String,@Body request: RequestCart): ResponseCart
 
 }
