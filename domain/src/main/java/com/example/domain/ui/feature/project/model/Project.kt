@@ -1,7 +1,7 @@
 package com.example.domain.ui.feature.project.model
 
-import kotlinx.serialization.Serializable
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class Project(

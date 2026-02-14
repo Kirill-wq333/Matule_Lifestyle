@@ -5,16 +5,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
@@ -30,10 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.domain.ui.feature.product.model.Products
 import com.example.matule20.ui.presentation.approutes.AppRoutes
 import com.example.matule20.ui.presentation.feature.catalog.viewmodel.CatalogViewModel
@@ -41,10 +35,7 @@ import com.example.matule20.ui.presentation.feature.main.ui.CatalogDescription
 import com.example.matule20.ui.presentation.feature.main.ui.MainProduct
 import com.example.matulelibrary.R
 import com.example.matulelibrary.shared.button.CartButton
-import com.example.matulelibrary.shared.button.ChipsButton
-import com.example.matulelibrary.shared.card.Card
 import com.example.matulelibrary.shared.input.SearchTextField
-import kotlin.collections.emptyList
 
 @Composable
 fun CatalogScreen(

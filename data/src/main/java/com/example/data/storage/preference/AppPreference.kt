@@ -15,6 +15,7 @@ class AppPreference @Inject constructor(
     private companion object {
         val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
         val USER_TOKEN = stringPreferencesKey("user_token")
+        val USER_ID_KEY = stringPreferencesKey("user_id")
     }
 
     suspend fun setUserLoggedIn(loggedIn: Boolean) {
@@ -29,6 +30,20 @@ class AppPreference @Inject constructor(
         }
     }
 
+    fun getUserId(): String?{
+        return runBlocking {
+            dataStore.data.first()[USER_ID_KEY]
+        }
+    }
+    suspend fun setUserId(userId: String?){
+        dataStore.edit { preferences ->
+            if (userId != null){
+                preferences[USER_ID_KEY] = userId
+            } else {
+                preferences.remove(USER_ID_KEY)
+            }
+        }
+    }
     suspend fun setUserToken(token: String?) {
         dataStore.edit { preferences ->
             if (token != null) {

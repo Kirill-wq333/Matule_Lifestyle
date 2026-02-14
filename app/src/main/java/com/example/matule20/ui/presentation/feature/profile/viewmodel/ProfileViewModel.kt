@@ -28,8 +28,8 @@ class ProfileViewModel @Inject constructor(
 
     fun profile(){
         viewModelScope.launch {
-            val token = tokenProvider.getToken()
-            val result = profileInteractor.user(token ?: "")
+            val userId = tokenProvider.getUserId()
+            val result = profileInteractor.user(userId ?: "")
             result
                 .onSuccess {
                     _profile.emit(it)

@@ -27,6 +27,8 @@ class AuthViewModel @Inject constructor(
            authInteractor.auth(identity, password)
                 .onSuccess {
                     tokenProvider.saveToken(it.token)
+                    tokenProvider.getUserId()
+                    tokenProvider.saveUserId(it.record.id)
                     _authState.value = AuthUiState.Success
                 }
                 .onFailure { error ->

@@ -2,7 +2,6 @@ package com.example.data.feature.profile.di
 
 import com.example.data.feature.profile.ProfileRepositoryImpl
 import com.example.data.feature.profile.datasource.ProfileApiService
-import com.example.data.feature.project.datasource.ProjectApiService
 import com.example.domain.ui.feature.profile.repository.ProfileRepository
 import dagger.Module
 import dagger.Provides

@@ -3,8 +3,6 @@ package com.example.matule20.ui.presentation.feature
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +25,7 @@ import com.example.matule20.ui.presentation.feature.main.viewmodel.MainViewModel
 import com.example.matule20.ui.presentation.feature.product.ui.ProductBottomSheet
 import com.example.matule20.ui.presentation.feature.product.viewmodel.ProductViewModel
 import com.example.matule20.ui.presentation.feature.profile.ui.ProfileScreen
+import com.example.matule20.ui.presentation.feature.profile.viewmodel.ProfileViewModel
 import com.example.matule20.ui.presentation.feature.projects.ui.CreateProjectScreen
 import com.example.matule20.ui.presentation.feature.projects.ui.ProjectsScreen
 import com.example.matule20.ui.presentation.feature.projects.viewmodel.ProjectViewModel
@@ -110,7 +109,9 @@ fun NavigationBuilder(
                 )
             }
             composable(AppRoutes.PROFILE) {
+                val vmProfile = hiltViewModel<ProfileViewModel>()
                 ProfileScreen(
+                    vm = vmProfile,
                     navController = navController
                 )
             }

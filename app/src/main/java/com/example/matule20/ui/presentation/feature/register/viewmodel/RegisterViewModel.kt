@@ -12,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authInteractor: AuthInteractor
+    private val authInteractor: AuthInteractor,
+    private val provider: TokenProvider
 ) : ViewModel() {
 
     private val _registerUiState: MutableStateFlow<RegisterUiState> = MutableStateFlow(RegisterUiState.Idle)
@@ -23,6 +24,7 @@ class RegisterViewModel @Inject constructor(
             val result = authInteractor.register(email = email, password = password, passwordConfirm = passwordConfirm)
             result
                 .onSuccess {
+                    provider.saveUserId(it.id)
                     _registerUiState.value = RegisterUiState.Success
                 }
                 .onFailure { error ->

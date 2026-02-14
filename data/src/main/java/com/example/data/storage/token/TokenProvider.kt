@@ -12,6 +12,17 @@ class TokenProvider @Inject constructor(
         return token?.ifEmpty { null }
     }
 
+    fun getUserId(): String?{
+        val token = appPreferences.getUserId()
+        return token?.ifEmpty { null }
+    }
+    fun saveUserId(userId: String){
+        runBlocking {
+            appPreferences.setUserId(userId)
+            appPreferences.setUserLoggedIn(true)
+        }
+        getToken()
+    }
     fun saveToken(token: String) {
         runBlocking {
             appPreferences.setUserToken(token)
